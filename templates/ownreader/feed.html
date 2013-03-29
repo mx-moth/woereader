@@ -1,0 +1,24 @@
+{% extends "ownreader/forms.html" %}
+{% block formcontent %}
+    <a href="{{ feed }}">
+        {{ parsed.title }}
+        {% if parsed.description %}
+            ({{ parsed.description }})
+        {% endif %}
+    </a><br />
+    <input type="hidden" name="{{ stage_field }}" value="2" />
+    <input type="hidden" name="{{ hash_field }}" value="{{ hash_value }}" />
+    <p><input type="submit" value="Submit" /></p>
+{% endblock %}
+{% block nonformcontent %}
+    {% for key, item in parsed.entries.items %}
+    <div class="aligned_div item">
+        <div class="item_title">
+            <a href="{{ item.link }}">{{ item.title }}({{ item.updated }})</a>
+        </div>
+        <div class="item_summary">
+            {{ item.content|safe }}
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
