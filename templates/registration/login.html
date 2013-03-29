@@ -1,0 +1,12 @@
+{% extends "ownreader/forms.html" %}{% load i18n %}
+{% block formcontent %}
+<p class='ralign'>
+    <input type="hidden" name="next" value="{{ next }}" />
+    <label for="submit"></label>
+    <input type="submit" value="{% trans 'Log in' %}" />
+</p>
+<p class="addendum">
+    <a class="button" href="{% url "registration_register" %}">Register</a>
+    <a class="button" href="{% url "auth_password_reset" %}">Password Reset</a>
+</p>
+{% endblock %}
