@@ -1,0 +1,203 @@
+* {
+	font-family: 'Liberation Sans', 'droid sans', 'helvetica', 'arial', sans-serif;
+	margin: 0px;
+	padding: 0px;
+}
+@font-face {
+	font-family: 'EntypoRegular';
+	src: url('../font/entypo/entypo.eot');
+	src: url('../font/entypo/entypo.eot?#iefix') format('embedded-opentype'),
+	url('../font/entypo/entypo.woff') format('woff'),
+	url('../font/entypo/entypo.ttf') format('truetype'),
+	url('../font/entypo/entypo.svg#EntypoRegular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+nav li a.symbol {
+	font-family: 'EntypoRegular';
+	font-size: 2em;
+	height: 1em;
+}
+body, html {
+	background-color: #000;
+	height: 100%;
+}
+a {
+	text-decoration: none;
+	color: #fff;
+}
+ul {
+	margin:0;
+	padding:0;
+}
+p {
+	margin:0;
+}
+#navbar {
+	position: fixed;
+	background-color: #333;
+	width: 100%;
+}
+nav {
+	min-width: 10em;
+	max-width: 60em;
+	margin: auto;
+}
+nav li {
+	background-color: #333;
+	float: left;
+	line-height: 2em;
+	list-style-type: none;
+	width: auto;
+	position: relative;
+}
+nav li a {
+	display: block;
+	height: 2em;
+	padding-left: 0.15em;
+	padding-right: 0.15em;
+}
+nav li:hover {
+	background-color: #444;
+}
+nav li:hover ul {
+	display:block;
+}
+nav li ul {
+	display:none;
+	position: absolute;
+}
+nav li li {
+	display: block;
+	float: none;
+}
+.leftfloat {
+	float: left;
+}
+.rightfloat {
+	float: right;
+}
+.rightfloat li {
+}
+.rightfloat li ul {
+	right: 0px;
+}
+#main {
+	margin-top: 2em;
+	padding-top: 2em;
+	max-width: 55em;
+	min-width: 20em;
+	margin: auto;
+	color: #fff;
+	text-align: left;
+	height: calc(100% - 2em);
+	height: -webkit-calc(100% - 2em);
+}
+html.touch nav{
+	font-size: 1.25em;
+}
+html.touch #main {
+	padding-top: 2.5em;
+}
+article {
+	height: 100%;
+	width: 100%;
+	background-color: #090909;
+}
+article > * {
+	background-color: #090909;
+}
+#outer_aligner {
+	height: 100%;
+	width: 100%;
+	display: table;
+}
+#inner_aligner {
+	display: table-cell;
+	vertical-align: middle;
+}
+div.aligned_div {
+	text-align:center;
+}
+div.aligned_div p {
+	display: inline-block;
+}
+.aligned_div {
+	margin-left: auto;
+	margin-right: auto;
+	width: 20em;
+}
+.aligned_div p {
+	display: table-row;
+	font-size: 1em;
+	line-height: 2em;
+}
+.aligned_div p label {
+	display: table-cell;
+	width: 10em;
+	padding-bottom:0.2em;
+}
+.aligned_div p input, .aligned_div p a {
+	font-size: 1em;
+	display: table-cell;
+	width: 10em;
+}
+.aligned_div input[type=submit] {
+	margin-top:1em;
+	margin-bottom:1em;
+	float: right;
+}
+@media screen and (min-width: 30em) {
+	.aligned_div p input[type=text], .aligned_div p input[type=password]{
+		width: 20em;
+	}
+	.aligned_div {
+		width: 30em;
+	}
+	#recaptcha_widget_div {
+		margin-left: 10em;
+	}
+	.aligned_div p input[type=submit] {
+		margin-left: 10em;
+	}
+	p.addendum{
+		margin-left: 5em;
+		margin-right: 5em;
+	}
+}
+.ralign {
+	text-align: right;
+}
+.button, input {
+	border: 1px solid #000;
+	font-size: 1em;
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+}
+input[type=text], input[type=password] {
+	line-height:1.5em;
+	height:1.5em;
+}
+.button, input[type=button], input[type=submit] {
+	color: #fff;
+	text-align: center;
+	background: #666;
+	height: 2em;
+	line-height: 2em;
+	cursor: pointer;
+}
+#recaptcha_widget_div {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+.aligned_div p label[for="id_captcha"] {
+	display:none;
+}
+p.addendum{
+	margin-top: 2em;
+	display: block;
+}
+p.item {
+	padding: 1em;
+	text-align: justify;
+}
