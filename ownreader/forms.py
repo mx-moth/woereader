@@ -14,7 +14,7 @@ class AddFeedForm(forms.Form):
         if validate['invalid']:
             reason = ''.join(validate['invalid'])
             raise forms.ValidationError("No valid feed at URL provided " +
-                                        reason)
+                                        " (" + reason + ")")
         return feed
 
 
