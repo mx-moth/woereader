@@ -6,7 +6,7 @@ from django.utils.timezone import now
 class Feed(models.Model):
     title = models.CharField(max_length=500)
     description = models.CharField(max_length=1000)
-    url = models.URLField()
+    url = models.URLField(unique=True)
     updated = models.DateTimeField(default=now())
     checked = models.DateTimeField(default=now())
     etag = models.CharField(blank=True, max_length=500)
@@ -32,7 +32,8 @@ class Item(models.Model):
 
 
 class UserItem(models.Model):
-    bookmarked = models.BooleanField()
+    bookmarked = models.BooleanField(default=False)
+    read = models.BooleanField(default=False)
     user = models.ForeignKey(User)
     item = models.ForeignKey(Item)
 

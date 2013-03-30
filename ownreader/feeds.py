@@ -1,22 +1,67 @@
 import feedparser
 from time import mktime
 from datetime import datetime
+from django.utils.timezone import now
+from ownreader.models import Feed, UserFeed, Item, UserItem
 
 
-def UpdateItems(url, checked=None, ETag=None):
-    if checked:
-        d = feedparser.parse(url, modified=checked.utctimetuple())
-    elif ETag:
-        d = feedparser.parse(url, etag=ETag)
+def UpdateFeed(feed):
+    """Returns the content of a feed given an ownreader Feed item
+    If the feed has not been modified, returns nothing.
+    """
+    if feed.etag:
+        d = feedparser.parse(feed.url, etag=feed.etag)
+    elif feed.checked:
+        d = feedparser.parse(feed.url, modified=feed.checked.utctimetuple())
     else:
+        d = feedparser.parse(feed.url)
+    if not d.status == 304:
+        return ParseFeed(feed.url, d)
+    else:
+        return None
+
+
+def UpdateItems(f, data=None):
+    """Creates ownreader Item items from an ownreader Feed item
+    Optionally takes an ParseFeed outputted data collection.
+    """
+    if data is None:
+        data = UpdateFeed(f)
+    if data is not None:
+        for index in data['entries']:
+            i = Item(feed=f, title=data['entries'][index]['title'],
+                     itemId=data['entries'][index]['id'],
+                     url=data['entries'][index]['link'],
+                     published=data['entries'][index]['updated'],
+                     description=data['entries'][index]['description'],
+                     content=data['entries'][index]['content'])
+            i.save()
+
+
+def UpdateUserItems(user):
+    """Creates ownreader UserItem items if required
+    Searches for userfeed__feeds__items without useritems for this user
+    If there are any, a useritem is made
+    """
+    itemsToUpdate = Item.objects.all().exclude(
+        users=user
+    ).filter(
+        feed__users=user)
+    for item in itemsToUpdate:
+        ui = UserItem(user=user, item=item)
+        ui.save()
+
+
+def ParseFeed(url, d=None):
+    """Creates ParseFeed data collection from a url
+    Optionally takes a feedparser d object
+    """
+    if not d:
         d = feedparser.parse(url)
-    return d.entries
-
-
-def ParseFeed(url):
-    d = feedparser.parse(url)
     feed = dict()
     feed['invalid'] = []
+    if hasattr(d, 'etag'):
+        feed['etag'] = d.etag
     if hasattr(d.feed, 'title'):
         feed['title'] = d.feed.title
     else:
@@ -60,7 +105,7 @@ def ParseFeed(url):
         for index, item in enumerate(d.entries):
             feed['entries'][index] = {}
             if not hasattr(item, 'title'):
-                feed['entries'][index]['title'] = ''
+                feed['entries'][index]['title'] = '(No Title)'
             else:
                 feed['entries'][index]['title'] = item.title
             if not hasattr(item, 'link'):
@@ -95,3 +140,32 @@ def ParseFeed(url):
                 feed['entries'][index]['content'] = item.summary
     feed['other'] = d
     return feed
+
+
+def AddFeed(feed, user):
+    """Creates Feed and/or UserFeed items given a URL and user
+    """
+    f = None
+    try:
+        f = Feed.objects.get(url=feed)
+        UpdateItems(f)
+    except:
+        pass
+    if f is None:
+        feed = ParseFeed(feed)
+        f = Feed(title=feed['title'],
+                 url=feed['url'],
+                 updated=feed['updated'],
+                 checked=now())
+        if hasattr(feed, 'etag'):
+            f.etag = feed['etag']
+        f.save()
+        UpdateItems(f, feed)
+    try:
+        uf = UserFeed.objects.get(user=user, feed=f)
+    except:
+        uf = None
+    if not uf:
+        uf = UserFeed(user=user, feed=f)
+        uf.save()
+    UpdateUserItems(user)

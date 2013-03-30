@@ -15,5 +15,4 @@ def index(request):
             context['items'].append({
                 'link': item.url, 'title': item.title,
                 'summary': item.content})
-            #context['items'].append(UpdateItems(item.url))
         return render(request, 'ownreader/index.html', context)
