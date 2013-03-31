@@ -23,7 +23,7 @@ def update(request):
     if not request.user.is_authenticated():
         return render(request, 'ownreader/welcome.html')
     else:
-        CeleryUpdater.delay(request.user)
-        while not CeleryUpdater.ready():
+        result = CeleryUpdater.delay(request.user)
+        while not result.ready():
             time.sleep(1)
         return redirect('/')
