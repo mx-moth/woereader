@@ -3,7 +3,7 @@ from time import mktime
 from datetime import datetime
 from django.utils.timezone import now
 from ownreader.models import Feed, UserFeed, Item, UserItem
-from Django.contrib.auth.models import User
+from django.contrib.auth.models import User
 
 
 def UpdateFeed(feed):
