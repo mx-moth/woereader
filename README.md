@@ -7,10 +7,10 @@ Basic django-based rss feed reader web application
 Depends on:
 -----------
 - django
-- django-registration
+- django-celery
 - django-recaptcha
+- django-registration
 - feedparser
-- celery
 
 
 Will eventually remove dependencies on:
