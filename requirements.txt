@@ -1,0 +1,5 @@
+Django==1.5.1
+django-celery==3.0.17
+django-recaptcha==0.0.6
+django-registration==0.8
+feedparser==5.1.3

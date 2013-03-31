@@ -3,3 +3,4 @@
 activate
 manage.py
 woereader/settings.py
+ownreader/migrations*
