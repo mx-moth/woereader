@@ -23,20 +23,27 @@ def UpdateFeed(feed):
 
 
 def UpdateItems(f, data=None):
-    """Creates ownreader Item items from an ownreader Feed item
+    """Creates ownreader Item items from an ownreader Feed item,
+    so long as that item is not already in the database
     Optionally takes an ParseFeed outputted data collection.
     """
     if data is None:
         data = UpdateFeed(f)
     if data is not None:
         for index in data['entries']:
-            i = Item(feed=f, title=data['entries'][index]['title'],
-                     itemId=data['entries'][index]['id'],
-                     url=data['entries'][index]['link'],
-                     published=data['entries'][index]['updated'],
-                     description=data['entries'][index]['description'],
-                     content=data['entries'][index]['content'])
-            i.save()
+            i = None
+            try:
+                i = Item.objects.get(itemId=data['entries'][index]['id'])
+            except:
+                pass
+            if i is None:
+                i = Item(feed=f, title=data['entries'][index]['title'],
+                         itemId=data['entries'][index]['id'],
+                         url=data['entries'][index]['link'],
+                         published=data['entries'][index]['updated'],
+                         description=data['entries'][index]['description'],
+                         content=data['entries'][index]['content'])
+                i.save()
 
 
 def UpdateUserItems(user):

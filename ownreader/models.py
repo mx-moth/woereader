@@ -23,7 +23,7 @@ class UserFeed(models.Model):
 class Item(models.Model):
     feed = models.ForeignKey(Feed)
     title = models.CharField(max_length=500)
-    itemId = models.CharField(max_length=100)
+    itemId = models.CharField(max_length=100, unique=True)
     url = models.URLField()
     published = models.DateTimeField(default=now())
     description = models.TextField()
