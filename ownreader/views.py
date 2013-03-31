@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 import time
 from ownreader.models import UserItem
-from ownreader.feeds import UpdateUser
+from ownreader.tasks import CeleryUpdater
 
 
 def index(request):
@@ -23,6 +23,5 @@ def update(request):
     if not request.user.is_authenticated():
         return render(request, 'ownreader/welcome.html')
     else:
-        UpdateUser(request.user)
-        time.sleep(10)
+        CeleryUpdater.delay(request.user)
         return redirect('/')
