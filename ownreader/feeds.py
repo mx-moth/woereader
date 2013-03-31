@@ -33,10 +33,8 @@ def UpdateItems(f, data=None):
         for index in data['entries']:
             i = None
             try:
-                i = Item.objects.filter(
-                    feed=f
-                ).filter(
-                    itemId=data['entries'][index]['id'])
+                i = Item.objects.get(
+                    feed=f, itemId=data['entries'][index]['id'])
             except:
                 pass
             if i is None:
