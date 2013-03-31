@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+import time
 from ownreader.models import UserItem
-# from ownreader.feeds import UpdateItems
+from ownreader.feeds import UpdateUser
 
 
 def index(request):
@@ -16,3 +17,12 @@ def index(request):
                 'link': item.url, 'title': item.title,
                 'summary': item.content})
         return render(request, 'ownreader/index.html', context)
+
+
+def update(request):
+    if not request.user.is_authenticated():
+        return render(request, 'ownreader/welcome.html')
+    else:
+        UpdateUser(request.user)
+        time.sleep(10)
+        return redirect('/')

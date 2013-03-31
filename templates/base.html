@@ -20,36 +20,30 @@
 		{% block navbar %}
 		<ul class="leftfloat">
 			{% block leftfloat %}
-			<li><a href="{% url 'ownreader:index' %}">Home</a></li>
-			<li><a class="symbol" href="{% url 'ownreader:addFeed' %}">⊞</a></li></li>
-			<li id="1"><a href="#">Tags</a>
-				<ul>
-					<li><a href="{% url 'ownreader:addFeed' %}">eins</a></li>
-					<li><a href="#">zwei</a></li>
-				</ul>
-			</li>
+			<li><a class="symbol" href="{% url 'ownreader:index' %}">&#8962;</a></li>
+			{% if user.is_authenticated %}
+				<li><a class="symbol" href="{% url 'ownreader:addFeed' %}">&#8862;</a></li></li>
+				<li><a class="symbol" href="{% url 'ownreader:UserUpdate' %}">&#128260;</a></li></li>
+				<li id="1"><a class="symbol" href="#">&#128193;</a>
+					<ul>
+						<li><a href="{% url 'ownreader:addFeed' %}">eins</a></li>
+						<li><a href="#">zwei</a></li>
+					</ul>
+				</li>
+			{% endif %}
 			{% endblock %}
 		</ul>
 		<ul class="rightfloat">
 			{% block rightfloat %}
-			<li><a class="symbol" href="#">&#9776;</a>
-			    <ul>
-			        <li>
-			            <a href="#">woop</a>
-			        </li>
-			        <li>
-			            <a href="#">woop</a>
-			        </li>
-			        <li>
-			            <a href="#">woop</a>
-			        </li>
-			    </ul>
+			<li><a class="symbol" href="#">&#9881;</a>
+				<ul>
+					{% if user.is_authenticated %}
+						<li><a href="{% url 'auth_logout' %}">logout</a></li>
+					{% else %}
+						<li><a href="{% url 'auth_login' %}">login</a></li>
+					{% endif %}
+				</ul>
 			</li>
-			{% if user.is_authenticated %}
-			    <li><a href="{% url 'auth_logout' %}">logout</a></li>
-			{% else %}
-			    <li><a href="{% url 'auth_login' %}">login</a></li>
-			{% endif %}
 			{% endblock %}
 		</ul>
 		{% endblock navbar %}

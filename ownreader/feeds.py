@@ -187,3 +187,10 @@ def UpdateAll():
     usersToUpdate = User.objects.all()
     for user in usersToUpdate:
         UpdateUserItems(user)
+
+
+def UpdateUser(user):
+    feedsToUpdate = Feed.objects.filter(users=user)
+    for feed in feedsToUpdate:
+        UpdateItems(feed)
+    UpdateUserItems(user)
