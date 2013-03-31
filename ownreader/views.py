@@ -24,4 +24,6 @@ def update(request):
         return render(request, 'ownreader/welcome.html')
     else:
         CeleryUpdater.delay(request.user)
+        while not CeleryUpdater.ready():
+            time.sleep(1)
         return redirect('/')
