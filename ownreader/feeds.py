@@ -117,14 +117,16 @@ def ParseFeed(url, d=None):
                 feed['entries'][index]['title'] = '(No Title)'
             else:
                 feed['entries'][index]['title'] = item.title
-            if not hasattr(item, 'link'):
-                feed['entries'][index]['link'] = feed['title'] + item.title
-            else:
+            if hasattr(item, 'link'):
                 feed['entries'][index]['link'] = item.link
-            if not hasattr(item, 'id'):
-                feed['entries'][index]['id'] = item.link
+                if hasattr(item, 'guidislink') and item.guidislink:
+                    feed['entries'][index]['id'] = item.link
+                elif hasattr(item, 'id'):
+                    feed['entries'][index]['id'] = item.id
+                else:
+                    feed['entries'][index]['id'] = item.link
             else:
-                feed['entries'][index]['id'] = item.id
+                feed['entries'][index]['link'] = feed['title'] + item.title
             try:
                 feed['entries'][index]['updated'] = datetime.fromtimestamp(
                     mktime(item.updated_parsed))

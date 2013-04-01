@@ -8,4 +8,5 @@ urlpatterns = patterns(
     url(r'^addfeed/$', login_required(AddFeedFormPreview(AddFeedForm)),
         name='addFeed'),
     url(r'^update$', 'ownreader.views.update', name='UserUpdate'),
+    url(r'^toggleRead$', 'ownreader.views.toggleRead'),
 )
