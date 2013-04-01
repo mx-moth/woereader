@@ -10,7 +10,11 @@ def index(request):
     if not request.user.is_authenticated():
         return render(request, 'ownreader/welcome.html')
     else:
-        items = UserItem.objects.filter(user=request.user).order_by(
+        items = UserItem.objects.filter(
+            user=request.user
+        ).filter(
+            read=False
+        ).order_by(
             '-item__published')
         context = {'items': []}
         for uitem in items:

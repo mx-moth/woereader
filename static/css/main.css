@@ -116,19 +116,20 @@ article > * {
 	display: table-cell;
 	vertical-align: middle;
 }
-div.aligned_div {
-	text-align:center;
+.aligned_div form, form.aligned_div{
+	text-align:left;
 }
-div.aligned_div p {
-	display: inline-block;
+.aligned_div form p, form.aligned_div p{
+	display: table-row;
 }
 .aligned_div {
+	text-align:center;
 	margin-left: auto;
 	margin-right: auto;
 	width: 20em;
 }
 .aligned_div p {
-	display: table-row;
+	display: inline-block;
 	font-size: 1em;
 	line-height: 2em;
 }
@@ -193,11 +194,11 @@ input[type=text], input[type=password] {
 .aligned_div p label[for="id_captcha"] {
 	display:none;
 }
-p.addendum{
+p.addendum, .aligned_div p.addendum{
 	margin-top: 2em;
 	display: block;
 }
-p.item {
+.item {
 	padding: 1em;
 	text-align: justify;
 }

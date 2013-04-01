@@ -1,20 +1,25 @@
 {% extends "ownreader/forms.html" %}
+{% block aligner %}{% endblock %}
+{% block formclass %}aligned_div{% endblock %}
 {% block formcontent %}
+    <p><label></label><input type="submit" value="Add/Preview" /></p><br />
+    <input type="hidden" name="{{ stage_field }}" value="2" />
+    <input type="hidden" name="{{ hash_field }}" value="{{ hash_value }}" />
+{% endblock %}
+<h1>
     <a href="{{ feed }}">
         {{ parsed.title }}
         {% if parsed.description %}
             ({{ parsed.description }})
         {% endif %}
-    </a><br />
-    <input type="hidden" name="{{ stage_field }}" value="2" />
-    <input type="hidden" name="{{ hash_field }}" value="{{ hash_value }}" />
-    <p><input type="submit" value="Submit" /></p>
-{% endblock %}
+</a></h1><br />
 {% block nonformcontent %}
     {% for key, item in parsed.entries.items %}
-    <div class="aligned_div item">
+    <div class="item">
         <div class="item_title">
-            <a href="{{ item.link }}">{{ item.title }}({{ item.updated }})</a>
+            <h3>
+                <a href="{{ item.link }}">{{ item.title }}({{ item.updated }})</a>
+            </h3>
         </div>
         <div class="item_summary">
             {{ item.content|safe }}
