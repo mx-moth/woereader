@@ -4,3 +4,4 @@ activate
 manage.py
 woereader/settings.py
 ownreader/migrations*
+rabbitmq-signing-key-public.asc
