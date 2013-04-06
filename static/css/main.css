@@ -3,6 +3,11 @@
 	margin: 0px;
 	padding: 0px;
 }
+img {
+	max-width:100vw;
+	height: auto;
+}
+
 @font-face {
 	font-family: 'EntypoRegular';
 	src: url('../font/entypo/entypo.eot');
@@ -201,4 +206,8 @@ p.addendum, .aligned_div p.addendum{
 .item {
 	padding: 1em;
 	text-align: justify;
+	max-width: 90vw;
+}
+.item *{
+	max-width: 90vw;
 }
