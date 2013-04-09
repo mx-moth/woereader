@@ -208,6 +208,9 @@ p.addendum, .aligned_div p.addendum{
 	text-align: justify;
 	max-width: 90vw;
 }
-.item *{
+.item * {
 	max-width: 90vw;
+}
+.item_summary * {
+	background-color: #090909 !important;
 }

@@ -33,18 +33,22 @@ def UpdateItems(f, data=None):
         for index in data['entries']:
             i = None
             try:
-                i = Item.objects.get(
-                    feed=f, itemId=data['entries'][index]['id'])
+                i = Item.objects.get(itemId=data['entries'][index]['id'])
             except:
                 pass
             if i is None:
-                i = Item(feed=f, title=data['entries'][index]['title'],
-                         itemId=data['entries'][index]['id'],
-                         url=data['entries'][index]['link'],
-                         published=data['entries'][index]['updated'],
-                         description=data['entries'][index]['description'],
-                         content=data['entries'][index]['content'])
-                i.save()
+                try:
+                    i = Item.objects.get(Url=data['entries'][index]['link'])
+                except:
+                    pass
+                if i is None:
+                    i = Item(feed=f, title=data['entries'][index]['title'],
+                             itemId=data['entries'][index]['id'],
+                             url=data['entries'][index]['link'],
+                             published=data['entries'][index]['updated'],
+                             description=data['entries'][index]['description'],
+                             content=data['entries'][index]['content'])
+                    i.save()
 
 
 def UpdateUserItems(user):

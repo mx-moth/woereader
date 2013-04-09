@@ -3,7 +3,7 @@
 {% for item in items %}
     <div class="item">
         <div class="item_title">
-            <a href="{{ item.link }}">{{ item.title }} (Read: {{ item.read }})</a>
+            <a href="{{ item.link }}">{{ item.title }}</a>
             <input type="button" onclick="toggleRead({{ item.id }})"
             value="Read">
         </div>
