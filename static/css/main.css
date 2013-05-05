@@ -18,7 +18,7 @@ img {
 	font-weight: normal;
 	font-style: normal;
 }
-nav li a.symbol {
+.menu a.symbol {
 	font-family: 'EntypoRegular';
 	font-size: 2em;
 	height: 1em;
@@ -48,7 +48,7 @@ nav {
 	max-width: 60em;
 	margin: auto;
 }
-nav li {
+.menu, .menu li {
 	background-color: #333;
 	float: left;
 	line-height: 2em;
@@ -56,23 +56,23 @@ nav li {
 	width: auto;
 	position: relative;
 }
-nav li a {
+.menu a {
 	display: block;
 	height: 2em;
 	padding-left: 0.15em;
 	padding-right: 0.15em;
 }
-nav li:hover {
+.menu:hover, .menu li:hover {
 	background-color: #444;
 }
-nav li:hover ul {
+.menu:hover ul {
 	display:block;
 }
-nav li ul {
+.menu ul {
 	display:none;
 	position: absolute;
 }
-nav li li {
+.menu li {
 	display: block;
 	float: none;
 }
