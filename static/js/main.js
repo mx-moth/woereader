@@ -65,7 +65,7 @@ function resizeContent(){
 function addCaptions(){
 	var str = $('body').html();
 	var re = /(<img[^>]*title=")([^"]*)("[^>]*>)/gi;
-	$('body').html(str.replace(re, "$1$2$3<br />$2<br />"));
+	$('body').html(str.replace(re, "$1$2$3<br /><p>$2</p><br />"));
 }
 
 //Functions for django+ajax
