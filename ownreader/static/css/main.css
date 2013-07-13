@@ -209,28 +209,41 @@ p.addendum,
 .item {
   padding-bottom: 1em;
   max-width: 100vw;
-  width: 100%;
+  width: 55em;
 }
 .item .item_summary {
-  max-width: 100vw;
+  /* Hack because of stupid qwantz table layout */
+
+  max-width: 100%;
+  padding-left: 2em;
+  padding-right: 2em;
   display: block;
 }
 .item .item_summary * {
-  width: 55em;
-  max-width: 100vw;
+  max-width: 100%;
   background-color: #060606 !important;
   text-align: justify;
 }
 .item .item_summary img {
-  max-width: 100vw;
   width: auto;
   height: auto;
+}
+.item .item_summary li {
+  list-style-position: inside;
+}
+.item .item_summary blockquote {
+  margin: 0em;
+  padding-left: 1em;
+}
+.item .item_summary table img {
+  width: 100%;
 }
 .item .item_header {
   border-top: 1px solid #ffffff;
   border-bottom: 1px solid #ffffff;
   display: table;
-  width: 100%;
+  width: 55em;
+  max-width: 100vw;
   margin-bottom: 1em;
 }
 .item .item_header .item_title {

@@ -24,7 +24,8 @@ def UpdateFeed(feed):
 
 def UpdateItems(f, data=None):
     """Creates ownreader Item items from an ownreader Feed item,
-    so long as that item is not already in the database
+    so long as that item is not already in the database, and the item
+    in question has an id (generated from parsefeed)
     Optionally takes an ParseFeed outputted data collection.
     """
     if data is None:
@@ -33,7 +34,7 @@ def UpdateItems(f, data=None):
         for index in data['entries']:
             i = None
             try:
-                i = Item.objects.get(itemId=data['entries'][index]['id'])
+                i = Item.objects.get(itemId=data['entries'][index]['id'][:255])
             except:
                 pass
             if i is None:
@@ -41,14 +42,15 @@ def UpdateItems(f, data=None):
                     i = Item.objects.get(Url=data['entries'][index]['link'])
                 except:
                     pass
-                if i is None:
-                    i = Item(feed=f, title=data['entries'][index]['title'],
-                             itemId=data['entries'][index]['id'],
-                             url=data['entries'][index]['link'],
-                             published=data['entries'][index]['updated'],
-                             description=data['entries'][index]['description'],
-                             content=data['entries'][index]['content'])
-                    i.save()
+            if i is None:
+                i = Item(feed=f,
+                        title=data['entries'][index]['title'][:1000],
+                        itemId=data['entries'][index]['id'][:255],
+                        url=data['entries'][index]['link'],
+                        published=data['entries'][index]['updated'],
+                        description=data['entries'][index]['description'],
+                        content=data['entries'][index]['content'])
+                i.save()
 
 
 def UpdateUserItems(user):
@@ -130,7 +132,9 @@ def ParseFeed(url, d=None):
                 else:
                     feed['entries'][index]['id'] = item.link
             else:
-                feed['entries'][index]['link'] = feed['title'] + item.title
+                if hasattr(item, 'id'):
+                    feed['entries'][index]['id'] = item.id
+                    feed['entries'][index]['link'] = feed['title'] + item.title
             try:
                 feed['entries'][index]['updated'] = datetime.fromtimestamp(
                     mktime(item.updated_parsed))
@@ -168,7 +172,7 @@ def AddFeed(feed, user):
         pass
     if f is None:
         feed = ParseFeed(feed)
-        f = Feed(title=feed['title'],
+        f = Feed(title=feed['title'][:1000],
                  url=feed['url'],
                  updated=feed['updated'],
                  checked=now())

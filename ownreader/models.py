@@ -4,7 +4,7 @@ from django.utils.timezone import now
 
 
 class Feed(models.Model):
-    title = models.CharField(max_length=500)
+    title = models.CharField(max_length=1000)
     description = models.CharField(max_length=1000)
     url = models.URLField(unique=True)
     updated = models.DateTimeField(default=now())
@@ -22,8 +22,8 @@ class UserFeed(models.Model):
 
 class Item(models.Model):
     feed = models.ForeignKey(Feed)
-    title = models.CharField(max_length=500)
-    itemId = models.CharField(max_length=100, unique=True)
+    title = models.CharField(max_length=1000)
+    itemId = models.CharField(max_length=255, unique=True)
     url = models.URLField()
     published = models.DateTimeField(default=now())
     description = models.TextField()

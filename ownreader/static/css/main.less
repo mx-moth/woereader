@@ -211,27 +211,39 @@ p.addendum, .aligned_div p.addendum{
 .item{
 	padding-bottom: 1em;
 	max-width: 100vw;
-	width: 100%;
+	width: @size-item;
 	.item_summary {
 		* {
-			width: @size-item;
-			max-width: 100vw;
+			max-width: 100%;
 			background-color: @col-bg2 !important;
 			text-align: justify;
 		}
 		img {
-			max-width: 100vw;
 			width: auto;
 			height: auto;
 		}
-		max-width: 100vw;
+		li {
+			list-style-position: inside;
+		}
+		blockquote {
+			margin: 0em;
+			padding-left: 1em;
+		}
+		/* Hack because of stupid qwantz table layout */
+		table img {
+			width: 100%;
+		}
+		max-width: 100%;
+		padding-left: 2em;
+		padding-right: 2em;
 		display: block;
 	}
 	.item_header {
 		border-top: 1px solid @col-txt;
 		border-bottom: 1px solid @col-txt;
 		display: table;
-		width: 100%;
+		width: @size-item;
+		max-width: 100vw;
 		margin-bottom: 1em;
 		.item_title {
 			max-width: 70vw;

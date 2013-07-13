@@ -29,8 +29,14 @@ class ItemAdmin(admin.ModelAdmin):
 admin.site.register(Item, ItemAdmin)
 
 
+def toggleRead(modeladmin, request, queryset):
+    queryset.update(read=1)
+toggleRead.short_description = "Mark Selected as Read"
+
+
 class UserItemAdmin(admin.ModelAdmin):
     list_display = ('gettitle', 'getfeed', 'read', 'user', 'item')
+    actions = [toggleRead]
 
     def gettitle(self, obj):
         return '%s' % (obj.item.title)
