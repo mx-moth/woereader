@@ -16,8 +16,9 @@ def UpdateFeed(feed):
         d = feedparser.parse(feed.url, modified=feed.checked.utctimetuple())
     else:
         d = feedparser.parse(feed.url)
-    if not d.status == 304:
-        return ParseFeed(feed.url, d)
+    if hasattr(d, 'status'):
+        if not d.status == 304:
+            return ParseFeed(feed.url, d)
     else:
         return None
 
