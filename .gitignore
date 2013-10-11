@@ -4,4 +4,6 @@ activate
 manage.py
 woereader/settings.py
 ownreader/migrations*
+ownreader/static/admin*
+static
 rabbitmq-signing-key-public.asc
