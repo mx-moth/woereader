@@ -2,8 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1,
-		maximum-scale=1, user-scalable=0">
+		<meta name="viewport" content="width=device-width, user-scalable=no">
 		<link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css" />
 		<link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
 		<script type="text/javascript">
@@ -16,48 +15,47 @@
 
 <body>
 	<div id="navbar">
-	<nav>
-		{% block navbar %}
-		<ul class="leftfloat">
-			{% block leftfloat %}
-			<li class="menu"><a class="symbol" href="{% url 'ownreader:index' %}">&#8962;</a></li>
-			{% if user.is_authenticated %}
-				<li class="menu"><a class="symbol" href="{% url 'ownreader:addFeed' %}">&#8862;</a></li></li>
-				<li class="menu"><a class="symbol" href="{% url 'ownreader:UserUpdate' %}">&#128260;</a></li></li>
-				<li class="menu" id="1"><a class="symbol" href="#">&#128193;</a>
+		<nav>
+			{% block navbar %}
+			<ul class="leftfloat">
+				{% block leftfloat %}
+				<li class="menu"><a class="symbol" href="{% url 'ownreader:index' %}">&#8962;</a></li>
+				{% if user.is_authenticated %}
+					<li class="menu"><a class="symbol" href="{% url 'ownreader:addFeed' %}">&#8862;</a></li></li>
+					<li class="menu"><a class="symbol" href="{% url 'ownreader:UserUpdate' %}">&#128260;</a></li></li>
+					<li class="menu" id="1"><a class="symbol" href="#">&#128193;</a>
+						<ul>
+							<li><a href="{% url 'ownreader:addFeed' %}">eins</a></li>
+							<li><a href="#">zwei</a></li>
+						</ul>
+					</li>
+				{% endif %}
+				{% endblock %}
+			</ul>
+			<ul class="rightfloat">
+				{% block rightfloat %}
+				<li class="menu"><a class="symbol" href="#">&#9881;</a>
 					<ul>
-						<li><a href="{% url 'ownreader:addFeed' %}">eins</a></li>
-						<li><a href="#">zwei</a></li>
+						{% if user.is_authenticated %}
+							<li><a href="{% url 'auth_logout' %}">logout</a></li>
+						{% else %}
+							<li><a href="{% url 'auth_login' %}">login</a></li>
+						{% endif %}
 					</ul>
 				</li>
-			{% endif %}
-			{% endblock %}
-		</ul>
-		<ul class="rightfloat">
-			{% block rightfloat %}
-			<li class="menu"><a class="symbol" href="#">&#9881;</a>
-				<ul>
-					{% if user.is_authenticated %}
-						<li><a href="{% url 'auth_logout' %}">logout</a></li>
-					{% else %}
-						<li><a href="{% url 'auth_login' %}">login</a></li>
-					{% endif %}
-				</ul>
-			</li>
-			{% endblock %}
-		</ul>
-		{% endblock navbar %}
-	</nav>
-</div>
-<div id="main">
-	<article>
+				{% endblock %}
+			</ul>
+			{% endblock navbar %}
+		</nav>
+	</div>
+	<div id="main">
+		<div id="navspacer">&nbsp;</div>
 		<div id="outer_aligner">
 			<div id="inner_aligner">
 				{% block content %}
 				{% endblock %}
 			</div>
 		</div>
-	</article>
-</div>
+	</div>
 </body>
 </html>

@@ -4,6 +4,7 @@
 @col-btnH:  #444444;
 @col-links: #ffffff;
 @col-txt:   #ffffff;
+@col-error: #FF0000;
 @size-item: 55em;
 
 * {
@@ -29,7 +30,7 @@
 	height: 1em;
 }
 .errorlist{
-	color: #F00;
+	color: @col-error;
 }
 body, html {
 	background-color: @col-bg;
@@ -50,6 +51,7 @@ p {
 	position: fixed;
 	background-color: @col-btn;
 	width: 100%;
+	clear: both;
 }
 nav {
 	min-width: 10em;
@@ -94,14 +96,14 @@ nav {
 	right: 0px;
 }
 #main {
-	margin-top: 2em;
-	padding-top: 2em;
-	max-width: @size-item;
-	margin: auto;
+	background-color: @col-bg2;
 	color: @col-txt;
+	display: table;
+	height: 100%;
+	margin: auto;
+	max-width: @size-item;
 	text-align: left;
-	height: calc(~"100% - 2em");
-	height: -webkit-calc(~"100% - 2em");
+	width: 100%;
 }
 html.touch nav{
 	font-size: 1.25em;
@@ -109,22 +111,21 @@ html.touch nav{
 html.touch #main {
 	padding-top: 2.5em;
 }
-article {
-	height: 100%;
-	width: 100%;
-	background-color: @col-bg2;
-}
-article > * {
+#main > * {
 	background-color: @col-bg2;
 }
 #outer_aligner {
 	height: 100%;
 	width: 100%;
-	display: table;
+	display: table-row;
 }
 #inner_aligner {
 	display: table-cell;
 	vertical-align: middle;
+}
+#navspacer {
+	display: table-row;
+	height: 2em;
 }
 .aligned_div form, form.aligned_div{
 	text-align:left;

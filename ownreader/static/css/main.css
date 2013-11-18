@@ -17,7 +17,7 @@
   height: 1em;
 }
 .errorlist {
-  color: #F00;
+  color: #ff0000;
 }
 body,
 html {
@@ -39,6 +39,7 @@ p {
   position: fixed;
   background-color: #333333;
   width: 100%;
+  clear: both;
 }
 nav {
   min-width: 10em;
@@ -83,14 +84,14 @@ nav {
   right: 0px;
 }
 #main {
-  margin-top: 2em;
-  padding-top: 2em;
-  max-width: 55em;
-  margin: auto;
+  background-color: #060606;
   color: #ffffff;
+  display: table;
+  height: 100%;
+  margin: auto;
+  max-width: 55em;
   text-align: left;
-  height: calc(100% - 2em);
-  height: -webkit-calc(100% - 2em);
+  width: 100%;
 }
 html.touch nav {
   font-size: 1.25em;
@@ -98,22 +99,21 @@ html.touch nav {
 html.touch #main {
   padding-top: 2.5em;
 }
-article {
-  height: 100%;
-  width: 100%;
-  background-color: #060606;
-}
-article > * {
+#main > * {
   background-color: #060606;
 }
 #outer_aligner {
   height: 100%;
   width: 100%;
-  display: table;
+  display: table-row;
 }
 #inner_aligner {
   display: table-cell;
   vertical-align: middle;
+}
+#navspacer {
+  display: table-row;
+  height: 2em;
 }
 .aligned_div form,
 form.aligned_div {
