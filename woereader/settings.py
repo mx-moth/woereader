@@ -2,6 +2,8 @@
 import os
 import djcelery
 djcelery.setup_loader()
+# Get .. as project root
+PROJECT_ROOT = os.path.dirname(os.path.dirname((os.path.abspath(__file__))))
 
 ACCOUNT_ACTIVATION_DAYS = 4
 ALLOWED_HOSTS = ''
@@ -18,7 +20,6 @@ DB_NAME = ''
 DB_USER = ''
 DB_PASSWORD = ''
 SECRET_KEY = ''
-PROJECT_ROOT = ''
 PROJECT_URL = ''
 TIME_ZONE = ''
 LANGUAGE_CODE = ''
