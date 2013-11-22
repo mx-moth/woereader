@@ -1,5 +1,4 @@
 *.pyc
-*__init__*
 woereader/dev_settings.py
 ownreader/migrations*
 ownreader/static/admin*
