@@ -1,0 +1,39 @@
+[program:erlang]
+command=epmd -port 30167
+user=woegjiub
+autorestart=true
+directory=/home/woegjiub/
+stdout_logfile=/home/woegjiub/logs/user/erlang.stdout.log
+stdout_logfile_maxbytes=10MB
+stderr_logfile=/home/woegjiub/logs/user/erlang.stderr.log
+stderr_logfile_maxbytes=10MB
+
+[program:rabbit]
+command=/home/woegjiub/webapps/rabbitmq/sbin/rabbitmq-server
+user=woegjiub
+autorestart=true
+directory=/home/woegjiub/webapps/rabbitmq/sbin/
+stdout_logfile=/home/woegjiub/logs/user/rabbit.stdout.log
+stdout_logfile_maxbytes=10MB
+stderr_logfile=/home/woegjiub/logs/user/rabbit.stderr.log
+stderr_logfile_maxbytes=10MB
+
+[program:celerybeat]
+command=/home/woegjiub/.virtualenvs/woereader/bin/python2.7 manage.py celery beat
+user=woegjiub
+autorestart=true
+directory=/home/woegjiub/woereader/
+stdout_logfile=/home/woegjiub/logs/user/celery_beat.stdout.log
+stdout_logfile_maxbytes=10MB
+stderr_logfile=/home/woegjiub/logs/user/celery_beat.stderr.log
+stderr_logfile_maxbytes=10MB
+
+[program:celeryworker]
+command=/home/woegjiub/.virtualenvs/woereader/bin/python2.7 manage.py celery worker
+user=woegjiub
+autorestart=true
+directory=/home/woegjiub/woereader/
+stdout_logfile=/home/woegjiub/logs/user/celery_beat.stdout.log
+stdout_logfile_maxbytes=10MB
+stderr_logfile=/home/woegjiub/logs/user/celery_beat.stderr.log
+stderr_logfile_maxbytes=10MB
