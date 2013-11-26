@@ -1,6 +1,8 @@
 *.pyc
-woereader/dev_settings.py
+celerybeat*
 ownreader/migrations*
 ownreader/static/admin*
-static
 rabbitmq-signing-key-public.asc
+static
+supervisor*
+woereader/settings.py
