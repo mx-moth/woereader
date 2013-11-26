@@ -11,6 +11,8 @@ Depends on:
 - django-recaptcha
 - django-registration
 - feedparser
+- MySQL-python
+- South
 
 
 May eventually remove dependencies on:

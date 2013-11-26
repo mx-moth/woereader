@@ -1,43 +1,27 @@
 # Django settings for the woereader project.
 import os
 import djcelery
+from datetime import timedelta
 djcelery.setup_loader()
+
 # Get .. as project root
 PROJECT_ROOT = os.path.dirname(os.path.dirname((os.path.abspath(__file__))))
 
 ACCOUNT_ACTIVATION_DAYS = 4
-ALLOWED_HOSTS = ''
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
-RECAPTCHA_PUBLIC_KEY = ''
-RECAPTCHA_PRIVATE_KEY = ''
-EMAIL_HOST = ''
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-DEFAULT_FROM_EMAIL = ''
-SERVER_EMAIL = ''
-DB_NAME = ''
-DB_USER = ''
-DB_PASSWORD = ''
-SECRET_KEY = ''
-PROJECT_URL = ''
-TIME_ZONE = ''
-LANGUAGE_CODE = ''
 
-# Grab the secrets
+# Grab the secrets/settings that change between deployments
 try:
     from dev_settings import *
 except ImportError:
     pass
 
-# Celery
-BROKER_URL = 'django://'
-
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': DB_ENGINE,
         'NAME': DB_NAME,
         'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
@@ -46,58 +30,22 @@ DATABASES = {
     }
 }
 
-# Hosts/domain names that are valid for this site; required if DEBUG is False
-# See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+USE_L10N = True # Localised Date Formats
+USE_TZ = True   # Timezone-awareness - nice for Celery
 
-SITE_ID = 1
-
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
-USE_I18N = True
-
-# If you set this to False, Django will not format dates, numbers and
-# calendars according to the current locale.
-USE_L10N = True
-
-# If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
-
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = ''
-
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/var/www/example.com/static/"
+# Static Files
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static/')
-
-# URL prefix for static files.
-# Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = PROJECT_URL + '/static/'
-
-# Additional locations of static files
 STATICFILES_DIRS = (
 )
-
-# List of finder classes that know how to find static files in
-# various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
-
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 
-# List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
@@ -116,14 +64,10 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'woereader.urls'
 
-# Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'woereader.wsgi.application'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, 'templates'),
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
 )
 
 INSTALLED_APPS = (
@@ -143,11 +87,6 @@ INSTALLED_APPS = (
     'kombu.transport.django',
 )
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -171,3 +110,11 @@ LOGGING = {
         },
     }
 }
+
+# Add the update task at the specified interval
+CELERYBEAT_SCHEDULE = {
+        'autoupdate': {
+            'task': 'ownreader.tasks.CeleryUpdater',
+            'schedule': timedelta(hours=1),
+            },
+        }

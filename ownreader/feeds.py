@@ -189,19 +189,3 @@ def AddFeed(feed, user):
         uf = UserFeed(user=user, feed=f)
         uf.save()
     UpdateUserItems(user)
-
-
-def UpdateAll():
-    feedsToUpdate = Feed.objects.all()
-    for feed in feedsToUpdate:
-        UpdateItems(feed)
-    usersToUpdate = User.objects.all()
-    for user in usersToUpdate:
-        UpdateUserItems(user)
-
-
-def UpdateUser(user):
-    feedsToUpdate = Feed.objects.filter(users=user)
-    for feed in feedsToUpdate:
-        UpdateItems(feed)
-    UpdateUserItems(user)

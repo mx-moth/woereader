@@ -32,7 +32,7 @@ def update(request):
     if not request.user.is_authenticated():
         return render(request, 'ownreader/welcome.html')
     else:
-        CeleryUpdater(request.user)
+        CeleryUpdater.delay(request.user)
         return redirect('/')
 
 
