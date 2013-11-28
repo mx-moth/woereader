@@ -120,10 +120,10 @@ def ParseFeed(url, d=None):
     if hasattr(d, 'entries'):
         for index, item in enumerate(d.entries):
             feed['entries'][index] = {}
-            if not hasattr(item, 'title'):
-                feed['entries'][index]['title'] = '(No Title)'
-            else:
+            if hasattr(item, 'title') and item.title:
                 feed['entries'][index]['title'] = item.title
+            else:
+                feed['entries'][index]['title'] = '(No Title)'
             if hasattr(item, 'link'):
                 feed['entries'][index]['link'] = item.link
                 if hasattr(item, 'guidislink') and item.guidislink:
@@ -148,14 +148,14 @@ def ParseFeed(url, d=None):
                 pass
             if not 'updated' in feed['entries'][index]:
                 feed['entries'][index]['updated'] = datetime(1970, 1, 1)
-            if not hasattr(item, 'description'):
-                feed['entries'][index]['description'] = ''
-            else:
+            if hasattr(item, 'description'):
                 feed['entries'][index]['description'] = item.description
-            if not hasattr(item, 'content'):
-                feed['entries'][index]['content'] = ''
             else:
+                feed['entries'][index]['description'] = ''
+            if hasattr(item, 'content'):
                 feed['entries'][index]['content'] = item.content
+            else:
+                feed['entries'][index]['content'] = ''
             if hasattr(item, 'summary'):
                 feed['entries'][index]['content'] = item.summary
     feed['other'] = d
