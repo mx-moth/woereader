@@ -57,10 +57,10 @@ function setupMenus() {
 //Appearance fixer functions
 function resizeContent(){
 	//Workaround for browsers who don't support CSS calc()
-	var properHeight = $(window).height() - $('#navbar').height();
-	if($('#main').height() < properHeight){
-		$('#main').css('height', properHeight);
-	}
+	//var properHeight = $(window).height() - $('#navbar').height();
+	//if($('#main').height() < properHeight){
+	//	$('#main').css('height', properHeight);
+	//}
 }
 function addCaptions(){
 	var str = $('body').html();
