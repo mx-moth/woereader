@@ -48,13 +48,11 @@ ul {
 p {
 	margin:0;
 }
-#navbar {
+nav {
+	min-width: 10em;
 	position: fixed;
 	background-color: @col-btn;
 	width: 100%;
-}
-nav {
-	min-width: 10em;
 }
 .menu, .menu li {
 	background-color: @col-btn;
@@ -160,7 +158,10 @@ html.touch #navspacer {
 	float: right;
 }
 @media screen and (min-width: 30em) {
-	.aligned_div p input[type=text], .aligned_div p input[type=password]{
+	.aligned_div p input[type=text],
+	.aligned_div p input[type=password],
+	.aligned_div p input[type=url],
+	.aligned_div p input[type=email]{
 		width: 20em;
 	}
 	.aligned_div {

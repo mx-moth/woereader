@@ -76,9 +76,9 @@ function resizeContent(){
 	//Workaround for browsers (webkit) who don't support CSS calc() with vw
 	//Stupidly hacky and annoying, Firefox does it perfectly
 	//Alternatively, sites not using tables for layout would make it work too
-	if($('.item').width() > $('#navbar').width() ||
+	if($('.item').width() > $('nav').width() ||
 	   $('.item').width() < $('#main').width()) {
-		var itemMax = $('#navbar').width();
+		var itemMax = $('nav').width();
 		$('.item').width(itemMax);
 		$('.item_header').width(itemMax);
 		var padding = parseInt($('.item_summary').css('padding-left'), 10);

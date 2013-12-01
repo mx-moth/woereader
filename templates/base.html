@@ -14,40 +14,38 @@
 </head>
 
 <body>
-	<div id="navbar">
-		<nav>
-			{% block navbar %}
-			<ul class="leftfloat">
-				{% block leftfloat %}
-				<li class="menu"><a class="symbol" href="{% url 'ownreader:index' %}">&#8962;</a></li>
-				{% if user.is_authenticated %}
-					<li class="menu"><a class="symbol" href="{% url 'ownreader:addFeed' %}">&#8862;</a></li></li>
-					<li class="menu"><a class="symbol" href="{% url 'ownreader:UserUpdate' %}">&#128260;</a></li></li>
-					<li class="menu" id="1"><a class="symbol" href="#">&#128193;</a>
-						<ul>
-							<li><a href="{% url 'ownreader:addFeed' %}">eins</a></li>
-							<li><a href="#">zwei</a></li>
-						</ul>
-					</li>
-				{% endif %}
-				{% endblock %}
-			</ul>
-			<ul class="rightfloat">
-				{% block rightfloat %}
-				<li class="menu"><a class="symbol" href="#">&#9881;</a>
+	<nav>
+		{% block navbar %}
+		<ul class="leftfloat">
+			{% block leftfloat %}
+			<li class="menu"><a class="symbol" href="{% url 'ownreader:index' %}">&#8962;</a></li>
+			{% if user.is_authenticated %}
+				<li class="menu"><a class="symbol" href="{% url 'ownreader:addFeed' %}">&#8862;</a></li></li>
+				<li class="menu"><a class="symbol" href="{% url 'ownreader:UserUpdate' %}">&#128260;</a></li></li>
+				<li class="menu" id="1"><a class="symbol" href="#">&#128193;</a>
 					<ul>
-						{% if user.is_authenticated %}
-							<li><a href="{% url 'auth_logout' %}">logout</a></li>
-						{% else %}
-							<li><a href="{% url 'auth_login' %}">login</a></li>
-						{% endif %}
+						<li><a href="{% url 'ownreader:addFeed' %}">eins</a></li>
+						<li><a href="#">zwei</a></li>
 					</ul>
 				</li>
-				{% endblock %}
-			</ul>
-			{% endblock navbar %}
-		</nav>
-	</div>
+			{% endif %}
+			{% endblock %}
+		</ul>
+		<ul class="rightfloat">
+			{% block rightfloat %}
+			<li class="menu"><a class="symbol" href="#">&#9881;</a>
+				<ul>
+					{% if user.is_authenticated %}
+						<li><a href="{% url 'auth_logout' %}">logout</a></li>
+					{% else %}
+						<li><a href="{% url 'auth_login' %}">login</a></li>
+					{% endif %}
+				</ul>
+			</li>
+			{% endblock %}
+		</ul>
+		{% endblock navbar %}
+	</nav>
 	<div id="main">
 		<div id="navspacer">&nbsp;</div>
 		<div id="outer_aligner">
