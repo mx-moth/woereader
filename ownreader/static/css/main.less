@@ -52,7 +52,6 @@ p {
 	position: fixed;
 	background-color: @col-btn;
 	width: 100%;
-	clear: both;
 }
 nav {
 	min-width: 10em;
@@ -109,8 +108,8 @@ nav {
 html.touch nav{
 	font-size: 1.25em;
 }
-html.touch #main {
-	padding-top: 2.5em;
+html.touch #navspacer {
+	height: 2.5em;
 }
 #main > * {
 	background-color: @col-bg2;
@@ -219,10 +218,10 @@ p.addendum, .aligned_div p.addendum{
 	width: @size-item;
 	.item_summary {
 		* {
-			/* calc and vw do not work in webkit, but this is for fixing
-			   html table-based layouts, which ignore max-width in percentages,
-			   so until webkit is fixed, it will also be in the page's js */
+			//works for everything, including tables... just not in webkit
 			max-width: calc(~"100vw - 4em") !important;
+			//works for everything except tables
+			max-width: 100%;
 			background: none !important;
 			text-align: justify;
 			color: @col-txt !important;

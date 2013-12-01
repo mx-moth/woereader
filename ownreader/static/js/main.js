@@ -1,7 +1,8 @@
-//Startup
+////Page Setup
 var canTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints;
 $(document).ready(prepare);
 $(window).resize(resizeContent);
+
 function prepare() {
 	addCaptions();
 	setupTouch();
@@ -9,25 +10,37 @@ function prepare() {
 	resizeContent();
 }
 
-//UI  setup functions
+
+
+////UI  setup functions
+
+//Add touch functionality if present
 function setupTouch() {
 	if(canTouch) {
 		$("html").addClass("touch");
 	}
 }
+
+//Show menus on demand, hide all others
 function menuShow($this){
 	$this.find('ul').css('display', 'block');
 	menuHide($('.menu').not($this));
 }
+
+//Hide specific menus on demand
 function menuHide($this){
 	$this.find('ul').css('display', 'none');
 }
+
+//Toggle all menus as required
 function menuToggle($this){
 	if($this.find('ul').css('display')=='none')
 		menuShow($this);
 	else
 		menuHide($this);
 }
+
+//Enable menu functionality
 function setupMenus() {
 	//Menus should have null locations; don't propagate links otherwise
 	$('a').on('click touchstart', (function(e){
@@ -54,21 +67,39 @@ function setupMenus() {
 	});
 }
 
-//Appearance fixer functions
+
+
+////Appearance fixer functions
+
+//Resize items so as to stop horizontal overflow
 function resizeContent(){
-	//Workaround for browsers who don't support CSS calc()
-	//var properHeight = $(window).height() - $('#navbar').height();
-	//if($('#main').height() < properHeight){
-	//	$('#main').css('height', properHeight);
-	//}
+	//Workaround for browsers (webkit) who don't support CSS calc() with vw
+	//Stupidly hacky and annoying, Firefox does it perfectly
+	//Alternatively, sites not using tables for layout would make it work too
+	if($('.item').width() > $('#navbar').width() ||
+	   $('.item').width() < $('#main').width()) {
+		var itemMax = $('#navbar').width();
+		$('.item').width(itemMax);
+		$('.item_header').width(itemMax);
+		var padding = parseInt($('.item_summary').css('padding-left'), 10);
+		itemMax -= 2 * padding;
+		$('table').width(itemMax);
+		$('table').find('*').css('max-width', itemMax);
+	}
 }
+
+//Remove the reqirement for mousing-over to get the mouse-over text from comics
 function addCaptions(){
 	var str = $('body').html();
 	var re = /(<img[^>]*title=")([^"]*)("[^>]*>)/gi;
 	$('body').html(str.replace(re, "$1$2$3<br /><p>$2</p><br />"));
 }
 
+
+
 //Functions for django+ajax
+
+//Retrieve cookies
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -84,10 +115,14 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+//Test methods for CSRF protection requirement
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
+
+//Pass data to the url via ajax easily
 function djajax($url, $data){
 	var csrftoken = getCookie('csrftoken');
 	$.ajax({
@@ -104,7 +139,11 @@ function djajax($url, $data){
 	return false;
 }
 
-//UI element response functions
+
+
+////Methods that perform specific Client-Server communication
+
+//Toggle the 'read' status for an item
 function toggleRead(itemId){
 	djajax("toggleRead", { id: itemId });
 }
