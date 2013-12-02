@@ -161,5 +161,10 @@ function djajax($url, $data){
 //Toggle the 'read' status for an item
 function toggleRead(itemId){
 	djajax("toggleRead", { id: itemId });
+	var item = '#' + itemId;
+	if($(item).css('display')=='none')
+		$('#' + itemId).css('display', 'block');
+	else
+		$('#' + itemId).css('display', 'none');
 }
 

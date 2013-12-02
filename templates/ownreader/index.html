@@ -12,7 +12,7 @@
             <input type="button" onclick="toggleRead({{ item.id }})" value="Read">
         </div>
     </div>
-        <div class="item_summary">
+        <div class="item_summary" id="{{ item.id }}">
             {{item.summary|safe}}
         </div>
     </div>
