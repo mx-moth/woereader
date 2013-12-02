@@ -14,20 +14,25 @@
 </head>
 
 <body>
+	<div id="smallscreen"></div>
 	<nav>
 		{% block navbar %}
 		<ul class="leftfloat">
 			{% block leftfloat %}
-			<li class="menu"><a class="symbol" href="{% url 'ownreader:index' %}">&#8962;</a></li>
+			<li class="menu">
+				<a class="symbol" href="{% url 'ownreader:index' %}">&#8962;</a>
+			</li>
 			{% if user.is_authenticated %}
-				<li class="menu"><a class="symbol" href="{% url 'ownreader:addFeed' %}">&#8862;</a></li></li>
-				<li class="menu"><a class="symbol" href="{% url 'ownreader:UserUpdate' %}">&#128260;</a></li></li>
-				<li class="menu" id="1"><a class="symbol" href="#">&#128193;</a>
-					<ul>
-						<li><a href="{% url 'ownreader:addFeed' %}">eins</a></li>
-						<li><a href="#">zwei</a></li>
-					</ul>
-				</li>
+			<li class="menu">
+				<a class="symbol" href="{% url 'ownreader:addFeed' %}">&#8862;</a>
+			</li>
+			<li class="menu">
+				<a class="symbol" href="{% url 'ownreader:UserUpdate' %}">&#128260;</a>
+			</li>
+			<li class="menu">
+				<a class="symbol" href="#" id="sidebarToggle"
+					onclick="sidebarToggle(); return false;">&#128193;</a>
+			</li>
 			{% endif %}
 			{% endblock %}
 		</ul>
@@ -46,12 +51,23 @@
 		</ul>
 		{% endblock navbar %}
 	</nav>
-	<div id="main">
+	<div id="wrapper">
 		<div id="navspacer">&nbsp;</div>
-		<div id="outer_aligner">
-			<div id="inner_aligner">
-				{% block content %}
-				{% endblock %}
+		<div id="asidewrapper">
+			<aside>
+				<p>
+					-----sidebar-----
+				</p>
+			</aside>
+		</div>
+		<div id="mainwrapper">
+			<div id="main">
+				<div id="outer_aligner">
+					<div id="inner_aligner">
+						{% block content %}
+						{% endblock %}
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

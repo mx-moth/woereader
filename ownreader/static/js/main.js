@@ -1,13 +1,13 @@
 ////Page Setup
 var canTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints;
 $(document).ready(prepare);
-$(window).resize(resizeContent);
+$(window).resize(scaleImages);
 
 function prepare() {
 	addCaptions();
 	setupTouch();
 	setupMenus();
-	resizeContent();
+	scaleImages();
 }
 
 
@@ -67,25 +67,40 @@ function setupMenus() {
 	});
 }
 
+//Show/hide the sidebar
+function sidebarToggle(){
+	if($('#asidewrapper').css('display')=='none'){
+		$('#asidewrapper').css('display', 'table-cell');
+		
+		//Only hide the main if the screen is small
+		if($('#smallscreen').css('visibility')=='visible')
+			$('#mainwrapper').css('display', 'none');
+	}else{
+		$('#asidewrapper').css('display', 'none');
+		//Always show the main
+		$('#mainwrapper').css('display', 'table-cell');
+	}
 
+	//Item space has changed
+	scaleImages();
+
+	//Deselect the Button
+	$('#sidebarToggle').blur();
+}
 
 ////Appearance fixer functions
 
-//Resize items so as to stop horizontal overflow
-function resizeContent(){
-	//Workaround for browsers (webkit) who don't support CSS calc() with vw
-	//Stupidly hacky and annoying, Firefox does it perfectly
-	//Alternatively, sites not using tables for layout would make it work too
-	if($('.item').width() > $('nav').width() ||
-	   $('.item').width() < $('#main').width()) {
-		var itemMax = $('nav').width();
-		$('.item').width(itemMax);
-		$('.item_header').width(itemMax);
-		var padding = parseInt($('.item_summary').css('padding-left'), 10);
-		itemMax -= 2 * padding;
-		$('table').width(itemMax);
-		$('table').find('*').css('max-width', itemMax);
-	}
+//Firefox doesn't obey max-width with percentages for display: table
+//Therefore, calculate the maximal width in terms of viewport size
+//The size must account for the sidebar, and the item padding
+//This is suboptimal as it does not account for scrollbars, and as it uses JS
+function scaleImages(){
+	var padding = 4;
+	if($('#asidewrapper').css('display')=='table-cell')
+		padding += 20;
+	width = 'calc(100vw - ' + padding + 'em)';
+
+	$('.item_summary').find('img').css('max-width', width);
 }
 
 //Remove the reqirement for mousing-over to get the mouse-over text from comics

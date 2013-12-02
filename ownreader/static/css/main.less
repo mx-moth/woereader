@@ -93,6 +93,27 @@ nav {
 .rightfloat li ul {
 	right: 0px;
 }
+#wrapper {
+	height: 100%;
+	width: 100%;
+	display: table;
+}
+#asidewrapper {
+	min-width: 20em;
+	display: none;
+	vertical-align: top;
+}
+#mainwrapper{
+	vertical-align: top;
+	display: table-cell;
+	width: 100%;
+}
+aside{
+	width: 100%;
+	vertical-align: top;
+	position: fixed;
+	color: @col-txt;
+}
 #main {
 	background-color: @col-bg2;
 	color: @col-txt;
@@ -120,6 +141,7 @@ html.touch #navspacer {
 #inner_aligner {
 	display: table-cell;
 	vertical-align: middle;
+	width: 100%;
 }
 #navspacer {
 	display: table-row;
@@ -178,6 +200,15 @@ html.touch #navspacer {
 		margin-right: 5em;
 	}
 }
+#smallscreen {
+	visibility: hidden;
+}
+@media screen and (max-width: 40em) {
+	//Easy way to tell JS that viewport < 40em
+	#smallscreen {
+		visibility: visible;
+	}
+}
 .ralign {
 	text-align: right;
 }
@@ -197,7 +228,7 @@ input[type=text], input[type=password] {
 .button, input[type=button], input[type=submit] {
 	color: @col-links;
 	text-align: center;
-	background: @col-btn !important;
+	background: @col-btn !important; //Ensure all buttons are unmodifiable
 	height: 2em;
 	line-height: 2em;
 	cursor: pointer;
@@ -215,22 +246,20 @@ p.addendum, .aligned_div p.addendum{
 }
 .item{
 	padding-bottom: 1em;
-	max-width: 100vw !important;
-	width: @size-item;
+	max-width: 100%;
 	.item_summary {
 		* {
-			//works for everything, including tables... just not in webkit
-			max-width: calc(~"100vw - 4em") !important;
-			//works for everything except tables
 			max-width: 100%;
-			background: none !important;
+			//Firefox ignores max-width in % for display:table children
+			max-width: calc(~"100vw - 4em");
+			background: none !important; //override inline styles
 			text-align: justify;
-			color: @col-txt !important;
-			font-size: 1em !important;
+			color: @col-txt !important; //override inline styles
+			font-size: 1em !important; //override inline styles
 		}
 		a {
-			color: @col-item-links !important;
-			margin: 0em !important;
+			color: @col-item-links !important; //override inline styles
+			margin: 0em !important; //override inline styles
 		}
 		img {
 			width: auto;
@@ -241,22 +270,31 @@ p.addendum, .aligned_div p.addendum{
 		}
 		blockquote {
 			padding-left: 1em;
-			margin: 0em !important;
+			margin: 0em !important; //override inline styles
 		}
-		max-width: 100%;
+		pre {
+			word-break: break-all;
+		}
+		//SO MANY websites are using tables for layout in their RSS
+		table, tr, td, tbody {
+			display: block;
+			max-width: 100%;
+			width: 100% !important; //override inline styles
+			overflow-wrap: break-word;
+			word-break: break-all;
+		}
 		padding-left: 2em;
 		padding-right: 2em;
-		display: block;
 	}
 	.item_header {
 		border-top: 1px solid @col-txt;
 		border-bottom: 1px solid @col-txt;
 		display: table;
-		width: @size-item;
+		width: 100%;
 		max-width: 100%;
 		margin-bottom: 1em;
 		.item_title {
-			max-width: 70vw;
+			max-width: 70%;
 			display: table-cell;
 			padding-left: 1em;
 			padding-right: 1em;
