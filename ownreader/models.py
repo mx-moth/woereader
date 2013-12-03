@@ -48,4 +48,5 @@ class Folder(models.Model):
 class UserPrefs(models.Model):
     user = models.ForeignKey(User)
     showUnread = models.BooleanField(default=False)
+    showSidebar = models.BooleanField(default=True)
     viewMode = models.TextField(default="expanded")

@@ -104,6 +104,9 @@ nav {
 	display: none;
 	vertical-align: top;
 }
+#wrapper.sidebar #asidewrapper{
+	display: table-cell;
+}
 #mainwrapper{
 	vertical-align: top;
 	display: table-cell;
@@ -209,6 +212,9 @@ html.touch #navspacer {
 	#smallscreen {
 		visibility: visible;
 	}
+	#wrapper.sidebar #mainwrapper {
+		display: none;
+	}
 }
 .ralign {
 	text-align: right;
@@ -244,6 +250,11 @@ input[type=text], input[type=password] {
 p.addendum, .aligned_div p.addendum{
 	margin-top: 2em;
 	display: block;
+}
+//Firefox ignores max-width in % for display:table children
+//Therefore, rules must be added for all vw margin cases
+#wrapper.sidebar .item_summary *{
+	max-width: calc(~"100vw - 24em");
 }
 .item{
 	max-width: 100%;

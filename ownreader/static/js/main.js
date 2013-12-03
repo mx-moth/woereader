@@ -1,15 +1,16 @@
 ////Page Setup
 var canTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints;
 $(document).ready(prepare);
-$(window).resize(scaleImages);
 
 function prepare() {
 	addCaptions();
 	setupTouch();
 	setupMenus();
-	scaleImages();
+	
+	//Makes small-screened devices ignore starting state of sidebar
+	if($('#smallscreen').css('visibility')=='visible')
+		$('#wrapper').removeClass('sidebar');
 }
-
 
 
 ////UI  setup functions
@@ -69,39 +70,21 @@ function setupMenus() {
 
 //Show/hide the sidebar
 function sidebarToggle(){
-	if($('#asidewrapper').css('display')=='none'){
-		$('#asidewrapper').css('display', 'table-cell');
-		
-		//Only hide the main if the screen is small
-		if($('#smallscreen').css('visibility')=='visible')
-			$('#mainwrapper').css('display', 'none');
+	if($('#wrapper').hasClass('sidebar')){
+		$('#wrapper').removeClass('sidebar');
 	}else{
-		$('#asidewrapper').css('display', 'none');
-		//Always show the main
-		$('#mainwrapper').css('display', 'table-cell');
+		$('#wrapper').addClass('sidebar');
 	}
-
-	//Item space has changed
-	scaleImages();
-
+	
 	//Deselect the Button
 	$('#sidebarToggle').blur();
+	
+	//Only change the preference if both can be seen at once
+	if($('#smallscreen').css('visibility')!='visible')
+		djajax('toggleSidebar', {showSidebar: 'toggle'});
 }
 
 ////Appearance fixer functions
-
-//Firefox doesn't obey max-width with percentages for display: table
-//Therefore, calculate the maximal width in terms of viewport size
-//The size must account for the sidebar, and the item padding
-//This is suboptimal as it does not account for scrollbars, and as it uses JS
-function scaleImages(){
-	var padding = 4;
-	if($('#asidewrapper').css('display')=='table-cell')
-		padding += 20;
-	width = 'calc(100vw - ' + padding + 'em)';
-
-	$('.item_summary').find('img').css('max-width', width);
-}
 
 //Remove the reqirement for mousing-over to get the mouse-over text from comics
 function addCaptions(){

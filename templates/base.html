@@ -23,16 +23,8 @@
 				<a class="symbol" href="{% url 'ownreader:index' %}">&#8962;</a>
 			</li>
 			{% if user.is_authenticated %}
-			<li class="menu">
-				<a class="symbol" href="{% url 'ownreader:addFeed' %}">&#8862;</a>
-			</li>
-			<li class="menu">
-				<a class="symbol" href="{% url 'ownreader:UserUpdate' %}">&#128260;</a>
-			</li>
-			<li class="menu">
-				<a class="symbol" href="#" id="sidebarToggle"
-					onclick="sidebarToggle(); return false;">&#128193;</a>
-			</li>
+			{% block appmenu %}
+			{% endblock %}
 			{% endif %}
 			{% endblock %}
 		</ul>
@@ -41,7 +33,7 @@
 			<li class="menu"><a class="symbol" href="#">&#9881;</a>
 				<ul>
 					{% if user.is_authenticated %}
-						{% block authmenu %}
+						{% block usermenu %}
 						{% endblock %}
 						<li><a href="{% url 'auth_logout' %}">logout</a></li>
 					{% else %}
@@ -53,15 +45,10 @@
 		</ul>
 		{% endblock navbar %}
 	</nav>
-	<div id="wrapper">
+	<div id="wrapper"{% block wrapperclasses %}{% endblock %}>
 		<div id="navspacer">&nbsp;</div>
-		<div id="asidewrapper">
-			<aside>
-				<p>
-					-----sidebar-----
-				</p>
-			</aside>
-		</div>
+		{% block sidebar %}
+		{% endblock %}
 		<div id="mainwrapper">
 			<div id="main">
 				<div id="outer_aligner">

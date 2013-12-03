@@ -32,7 +32,8 @@ def index(request):
             ).order_by(
                 '-item__published')
         context = {'items': [],
-                   'showUnread': prefs.showUnread}
+                   'showUnread': prefs.showUnread,
+                   'showSidebar': prefs.showSidebar}
         for uitem in items:
             item = uitem.item
             context['items'].append({
@@ -79,3 +80,21 @@ def toggleUnread(request):
             prefs.showUnread = True
         prefs.save()
     return redirect('/')
+
+
+def toggleSidebar(request):
+    if request.user.is_authenticated():
+        try:
+            prefs = UserPrefs.objects.get(user=request.user)
+        except:
+            pass
+    if request.method == "POST":
+        if request.POST.get('showSidebar') == 'toggle':
+            prefs.showSidebar = bool(not prefs.showSidebar)
+            prefs.save()
+        return HttpResponse(201)
+    else:
+        prefs.showSidebar = bool(not prefs.showSidebar)
+        prefs.save()
+    return redirect('/')
+
