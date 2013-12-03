@@ -43,3 +43,9 @@ class Folder(models.Model):
     description = models.CharField(max_length=200)
     user = models.ForeignKey(User)
     feeds = models.ManyToManyField(UserFeed)
+
+
+class UserPrefs(models.Model):
+    user = models.ForeignKey(User)
+    showUnread = models.BooleanField(default=False)
+    viewMode = models.TextField(default="expanded")

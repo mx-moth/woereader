@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+{% block authmenu %}
+    {% if showUnread %}
+	    <li><a href="{% url 'ownreader:toggleUnread' %}">Hide Unread</a></li>
+	{% else %}
+	    <li><a href="{% url 'ownreader:toggleUnread' %}">View Unread</a></li>
+	{% endif %}
+{% endblock %}
 {% block content %}
 {% for item in items %}
 <div class="item">

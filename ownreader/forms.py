@@ -27,3 +27,6 @@ class AddFeedFormPreview(FormPreview):
     def done(self, request, cleaned_data):
         AddFeed(cleaned_data['feed'], request.user)
         return redirect('/')
+
+#class ItemForm(forms.Form):
+    #URL, title, id, summary(description/content), read, bookmarked, published

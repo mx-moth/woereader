@@ -1,5 +1,5 @@
 from django.contrib import admin
-from ownreader.models import Feed, UserFeed, Item, UserItem, Folder
+from ownreader.models import Feed, UserFeed, Item, UserItem, Folder, UserPrefs
 
 
 class FeedAdmin(admin.ModelAdmin):
@@ -49,3 +49,4 @@ class UserItemAdmin(admin.ModelAdmin):
     getfeed.admin_order_field = 'item__feed__title'
 admin.site.register(UserItem, UserItemAdmin)
 admin.site.register(Folder)
+admin.site.register(UserPrefs)

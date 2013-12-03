@@ -41,6 +41,8 @@
 			<li class="menu"><a class="symbol" href="#">&#9881;</a>
 				<ul>
 					{% if user.is_authenticated %}
+						{% block authmenu %}
+						{% endblock %}
 						<li><a href="{% url 'auth_logout' %}">logout</a></li>
 					{% else %}
 						<li><a href="{% url 'auth_login' %}">login</a></li>

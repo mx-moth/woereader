@@ -167,4 +167,3 @@ function toggleRead(itemId){
 	else
 		$('#' + itemId).css('display', 'none');
 }
-

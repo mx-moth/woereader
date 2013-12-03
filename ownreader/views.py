@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponse
 from ownreader.models import UserItem
+from ownreader.models import UserPrefs
 from ownreader.tasks import CeleryUpdater
 
 
@@ -10,13 +11,28 @@ def index(request):
     if not request.user.is_authenticated():
         return render(request, 'ownreader/welcome.html')
     else:
-        items = UserItem.objects.filter(
-            user=request.user
-        ).filter(
-            read=False
-        ).order_by(
-            '-item__published')
-        context = {'items': []}
+        prefs = None
+        try:
+            prefs = UserPrefs.objects.get(user=request.user)
+        except:
+            pass
+        if prefs is None:
+            prefs = UserPrefs(user=request.user)
+            prefs.save()
+        if prefs.showUnread:
+            items = UserItem.objects.filter(
+                user=request.user
+            ).order_by(
+                '-item__published')
+        else:
+            items = UserItem.objects.filter(
+                user=request.user
+            ).filter(
+                read=False
+            ).order_by(
+                '-item__published')
+        context = {'items': [],
+                   'showUnread': prefs.showUnread}
         for uitem in items:
             item = uitem.item
             context['items'].append({
@@ -52,3 +68,14 @@ def toggleRead(request):
         return HttpResponse(201)
     else:
         return HttpResponse(404)
+
+
+def toggleUnread(request):
+    if request.user.is_authenticated():
+        prefs = UserPrefs.objects.get(user=request.user)
+        if prefs.showUnread:
+            prefs.showUnread = False
+        else:
+            prefs.showUnread = True
+        prefs.save()
+    return redirect('/')
