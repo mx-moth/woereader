@@ -211,6 +211,7 @@ form.aligned_div p {
 .lalign {
   text-align: left;
 }
+button,
 .button,
 input {
   border: 1px solid #000;
@@ -223,6 +224,7 @@ input[type=password] {
   line-height: 1.5em;
   height: 1.5em;
 }
+button,
 .button,
 input[type=button],
 input[type=submit] {
@@ -256,6 +258,7 @@ p.addendum,
   padding-bottom: 1em;
   padding-left: 2em;
   padding-right: 2em;
+  display: block;
 }
 .item .item_summary * {
   max-width: 100%;
@@ -301,7 +304,7 @@ p.addendum,
   max-width: 100%;
 }
 .item .item_header .item_title {
-  max-width: 70%;
+  max-width: 90%;
   display: table-cell;
   padding-left: 1em;
   padding-right: 1em;
@@ -313,6 +316,22 @@ p.addendum,
 .item .item_header .item_actions {
   display: table-cell;
   vertical-align: middle;
-  width: 2em;
   padding-right: 1em;
+  margin-left: auto;
+  text-align: right;
+  width: 5em;
+  min-width: 5em;
+}
+.item .item_header .item_actions * {
+  display: inline;
+  vertical-align: middle;
+}
+.item .item_header .item_actions .hider {
+  width: 2em;
+}
+.item.read .item_header a {
+  color: #777777;
+}
+.item.collapsed .item_summary {
+  display: none;
 }

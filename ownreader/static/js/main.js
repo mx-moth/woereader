@@ -84,6 +84,21 @@ function sidebarToggle(){
 		djajax('toggleSidebar', {showSidebar: 'toggle'});
 }
 
+//Show/hide items
+function toggleShow(itemId){
+	var item = '#' + itemId;
+	if($(item).hasClass('collapsed')){
+		$(item).find('.hider').text("-");
+		$(item).removeClass('collapsed');
+	}
+	else{
+		$(item).find('.hider').text("+");
+		$(item).addClass('collapsed');
+	}
+}
+
+
+
 ////Appearance fixer functions
 
 //Remove the reqirement for mousing-over to get the mouse-over text from comics
@@ -145,8 +160,14 @@ function djajax($url, $data){
 function toggleRead(itemId){
 	djajax("toggleRead", { id: itemId });
 	var item = '#' + itemId;
-	if($(item).css('display')=='none')
-		$('#' + itemId).css('display', 'block');
-	else
-		$('#' + itemId).css('display', 'none');
+	if($(item).hasClass('read')){
+		$(item).removeClass('read');
+	}
+	else{
+		$(item).addClass('read');
+		if(!$(item).hasClass('collapsed')){
+			$(item).find('.hider').text("+");
+			$(item).addClass('collapsed');
+		}
+	}
 }

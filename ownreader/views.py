@@ -33,6 +33,7 @@ def index(request):
                 '-item__published')
         context = {'items': [],
                    'showUnread': prefs.showUnread,
+                   'viewMode': prefs.viewMode,
                    'showSidebar': prefs.showSidebar}
         for uitem in items:
             item = uitem.item

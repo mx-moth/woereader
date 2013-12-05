@@ -4,6 +4,7 @@
 @col-btnH:       #555555;
 @col-links:      #ffffff;
 @col-txt:        #ffffff;
+@col-read:       #777777;
 @col-item-links: #bbbbff;
 @col-error:      #FF0000;
 @size-item:      55em;
@@ -222,7 +223,7 @@ html.touch #navspacer {
 .lalign {
 	text-align: left;
 }
-.button, input {
+button, .button, input {
 	border: 1px solid #000;
 	font-size: 1em;
 	box-sizing: content-box;
@@ -232,7 +233,7 @@ input[type=text], input[type=password] {
 	line-height:1.5em;
 	height:1.5em;
 }
-.button, input[type=button], input[type=submit] {
+button, .button, input[type=button], input[type=submit] {
 	color: @col-links;
 	text-align: center;
 	background: @col-btn !important; //Ensure all buttons are unmodifiable
@@ -298,6 +299,7 @@ p.addendum, .aligned_div p.addendum{
 		padding-bottom: 1em;
 		padding-left: 2em;
 		padding-right: 2em;
+		display: block;
 	}
 	.item_header {
 		border-top: 1px solid @col-txt;
@@ -306,7 +308,7 @@ p.addendum, .aligned_div p.addendum{
 		width: 100%;
 		max-width: 100%;
 		.item_title {
-			max-width: 70%;
+			max-width: 90%;
 			display: table-cell;
 			padding-left: 1em;
 			padding-right: 1em;
@@ -318,8 +320,24 @@ p.addendum, .aligned_div p.addendum{
 		.item_actions {
 			display: table-cell;
 			vertical-align: middle;
-			width: 2em;
 			padding-right: 1em;
+			margin-left: auto;
+			text-align: right;
+			width: 5em;
+			min-width: 5em;
+			* {
+				display: inline;
+				vertical-align: middle;
+			}
+			.hider {
+				width: 2em;
+			}
 		}
 	}
+}
+.item.read .item_header a{
+	color: @col-read;
+}
+.item.collapsed .item_summary {
+	display: none;
 }

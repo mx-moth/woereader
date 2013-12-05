@@ -28,7 +28,10 @@
 {% endblock %}
 {% block content %}
 {% for item in items %}
-<div class="item">
+<div class="item
+    {% if item.read %}read{% endif %}
+    {% if viewMode != "expanded" %} collapsed{% endif %}"
+    id="{{ item.id }}">
     <div class="item_header">
         <div class="item_title">
             <h3>
@@ -36,6 +39,11 @@
             </h3>
         </div>
         <div class="item_actions">
+            <button onclick="toggleShow({{ item.id }})" class="hider">
+                {% if viewMode == "expanded" %}-
+                {% else %}+
+                {% endif %}
+            </button>
             <form action={% url 'ownreader:toggleRead' %} method="post">
                 {% csrf_token %}
                 <input name="id" type="hidden" value="{{ item.id }}" />
@@ -44,11 +52,11 @@
             </form>
         </div>
     </div>
-        <div class="item_summary" id="{{ item.id }}">
-            {{item.summary|safe}}
-        </div>
+    <div class="item_summary">
+        {{item.summary|safe}}
     </div>
-    {% endfor %}
+</div>
+{% endfor %}
 {% endblock %}
 
 {% block sidebar %}
