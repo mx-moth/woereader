@@ -1,6 +1,6 @@
-{% extends "ownreader/dialog.html" %}
-{% block textcontent %}
-<form class="{% block formclass %}{% endblock %}" method="post" action=".">
+{% extends "base.html" %}
+{% block content %}
+<form class="aligned_div" method="post" action=".">
     {% csrf_token %}
         {% if form.errors %}
             {{ form.errors|pluralize }}

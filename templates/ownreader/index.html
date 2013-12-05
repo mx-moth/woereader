@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block aligner %}{% endblock %}
+
 {% block appmenu %}
 	<li class="menu">
 		<a class="symbol" href="{% url 'ownreader:addFeed' %}">&#8862;</a>
@@ -30,7 +32,7 @@
 {% for item in items %}
 <div class="item
     {% if item.read %}read{% endif %}
-    {% if viewMode != "expanded" %} collapsed{% endif %}"
+    {% if viewMode != "expanded" %}collapsed{% endif %}"
     id="{{ item.id }}">
     <div class="item_header">
         <div class="item_title">

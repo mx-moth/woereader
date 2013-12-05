@@ -89,6 +89,7 @@ nav {
 #asidewrapper {
   min-width: 20em;
   display: none;
+  height: 100%;
   vertical-align: top;
 }
 #wrapper.sidebar #asidewrapper {
@@ -100,10 +101,14 @@ nav {
   width: 100%;
 }
 aside {
-  width: 100%;
+  width: 20em;
+  height: 100%;
+  display: table-cell;
   vertical-align: top;
   position: fixed;
+  border-right: 1px solid #ffffff;
   color: #ffffff;
+  background: #222222;
 }
 #main {
   background-color: #222222;
@@ -273,7 +278,6 @@ p.addendum,
   margin: 0em !important;
 }
 .item .item_summary img {
-  width: auto;
   height: auto;
 }
 .item .item_summary li {
@@ -302,6 +306,7 @@ p.addendum,
   display: table;
   width: 100%;
   max-width: 100%;
+  height: 2em;
 }
 .item .item_header .item_title {
   max-width: 90%;
@@ -334,4 +339,7 @@ p.addendum,
 }
 .item.collapsed .item_summary {
   display: none;
+}
+.centredText {
+  text-align: center;
 }
