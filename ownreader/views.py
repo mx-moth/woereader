@@ -66,9 +66,7 @@ def toggleRead(request):
             else:
                 item.read = True
             item.save()
-        return HttpResponse(201)
-    else:
-        return HttpResponse(404)
+    return redirect('/')
 
 
 def toggleUnread(request):

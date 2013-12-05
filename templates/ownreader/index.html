@@ -13,13 +13,14 @@
 	</li>
 {% endblock %}
 
-{% block authmenu %}
+{% block usermenu %}
     {% if showUnread %}
 	    <li><a href="{% url 'ownreader:toggleUnread' %}">Hide Unread</a></li>
 	{% else %}
 	    <li><a href="{% url 'ownreader:toggleUnread' %}">View Unread</a></li>
 	{% endif %}
 {% endblock %}
+
 {% block wrapperclasses %}
     class="
     {% if showSidebar %}sidebar{% endif %}
@@ -35,7 +36,12 @@
             </h3>
         </div>
         <div class="item_actions">
-            <input type="button" onclick="toggleRead({{ item.id }})" value="Read">
+            <form action={% url 'ownreader:toggleRead' %} method="post">
+                {% csrf_token %}
+                <input name="id" type="hidden" value="{{ item.id }}" />
+                <input type="submit" value="Read"
+                    onclick="toggleRead({{ item.id }}); return false;">
+            </form>
         </div>
     </div>
         <div class="item_summary" id="{{ item.id }}">
