@@ -178,6 +178,6 @@ function markAllAsRead(){
 	djajax("markRead", items);
 	items = $('.item').not('.read');
 	items.addClass('read');
-	items.find('.item_summary').not('collapsed').addClass('collapsed');
+	items.addClass('collapsed');
 	items.find('.hider').text("+");
 }
