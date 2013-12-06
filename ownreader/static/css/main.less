@@ -26,10 +26,12 @@
 	font-weight: normal;
 	font-style: normal;
 }
-.menu a.symbol {
+.menu a.symbol, .menu button.symbol {
 	font-family: 'EntypoRegular';
 	font-size: 2em;
 	height: 1em;
+	line-height: 1em;
+	background: none;
 }
 .errorlist{
 	color: @col-error;
@@ -63,11 +65,14 @@ nav {
 	width: auto;
 	position: relative;
 }
-.menu a {
+.menu a, .menu button {
 	display: block;
 	height: 2em;
-	padding-left: 0.15em;
-	padding-right: 0.15em;
+	padding-left: 0.15em !important;
+	padding-right: 0.15em !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	border: none;
 }
 .menu:hover, .menu li:hover {
 	background-color: @col-btnH;
@@ -241,7 +246,7 @@ input[type=text], input[type=password] {
 button, .button, input[type=button], input[type=submit] {
 	color: @col-links;
 	text-align: center;
-	background: @col-btn !important; //Ensure all buttons are unmodifiable
+	background: @col-btn;
 	height: 2em;
 	line-height: 2em;
 	cursor: pointer;
@@ -332,7 +337,6 @@ p.addendum, .aligned_div p.addendum{
 			min-width: 5em;
 			* {
 				display: inline;
-				vertical-align: middle;
 			}
 			.hider {
 				width: 2em;

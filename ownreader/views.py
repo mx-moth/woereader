@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from ownreader.models import UserItem
 from ownreader.models import UserPrefs
 from ownreader.tasks import CeleryUpdater
+from ownreader.forms import MarkAllReadFormSet
 
 
 @ensure_csrf_cookie
@@ -31,7 +32,9 @@ def index(request):
                 read=False
             ).order_by(
                 '-item__published')
+        allItems = MarkAllReadFormSet(queryset=items)
         context = {'items': [],
+                   'formset': allItems,
                    'showUnread': prefs.showUnread,
                    'viewMode': prefs.viewMode,
                    'showSidebar': prefs.showSidebar}
@@ -47,26 +50,36 @@ def index(request):
 
 
 def update(request):
-    if not request.user.is_authenticated():
-        return render(request, 'ownreader/welcome.html')
-    else:
+    if request.user.is_authenticated():
         CeleryUpdater.delay(request.user)
-        return redirect('/')
+    return redirect('/')
 
 
 def toggleRead(request):
-    if request.method == "POST":
-        item = None
-        try:
-            item = UserItem.objects.get(pk=request.POST['id'])
-        except:
-            pass
-        if item is not None and item.user == request.user:
-            if item.read:
-                item.read = False
-            else:
-                item.read = True
-            item.save()
+    if request.user.is_authenticated():
+        if request.method == "POST":
+            item = None
+            try:
+                item = UserItem.objects.get(pk=request.POST['id'])
+            except:
+                pass
+            if item is not None and item.user == request.user:
+                if item.read:
+                    item.read = False
+                else:
+                    item.read = True
+                item.save()
+    return redirect('/')
+
+
+def markRead(request):
+    if request.user.is_authenticated():
+        if request.method == "POST":
+            allItems = MarkAllReadFormSet(request.POST)
+            instances = allItems.save(commit=False)
+            for instance in instances:
+                instance.read = True
+                instance.save()
     return redirect('/')
 
 
@@ -87,13 +100,13 @@ def toggleSidebar(request):
             prefs = UserPrefs.objects.get(user=request.user)
         except:
             pass
-    if request.method == "POST":
-        if request.POST.get('showSidebar') == 'toggle':
+        if request.method == "POST":
+            if request.POST.get('showSidebar') == 'toggle':
+                prefs.showSidebar = bool(not prefs.showSidebar)
+                prefs.save()
+            return HttpResponse(201)
+        else:
             prefs.showSidebar = bool(not prefs.showSidebar)
             prefs.save()
-        return HttpResponse(201)
-    else:
-        prefs.showSidebar = bool(not prefs.showSidebar)
-        prefs.save()
     return redirect('/')
 

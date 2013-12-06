@@ -11,4 +11,5 @@ urlpatterns = patterns(
     url(r'^toggleRead$', 'ownreader.views.toggleRead', name="toggleRead"),
     url(r'^toggleUnread$', 'ownreader.views.toggleUnread', name="toggleUnread"),
     url(r'^toggleSidebar$', 'ownreader.views.toggleSidebar', name="toggleSidebar"),
+    url(r'^markRead$', 'ownreader.views.markRead', name="markRead"),
 )

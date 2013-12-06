@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.formtools.preview import FormPreview
+from django.forms.models import modelformset_factory
 from ownreader.feeds import ParseFeed, AddFeed
+from ownreader.models import UserItem
 from django.shortcuts import redirect
 
 
@@ -28,5 +30,9 @@ class AddFeedFormPreview(FormPreview):
         AddFeed(cleaned_data['feed'], request.user)
         return redirect('/')
 
-#class ItemForm(forms.Form):
-    #URL, title, id, summary(description/content), read, bookmarked, published
+
+MarkAllReadFormSet = modelformset_factory(
+                                          UserItem,
+                                          fields=('id','read',),
+                                          extra=0,
+                                          widgets={'read': forms.HiddenInput})

@@ -171,3 +171,13 @@ function toggleRead(itemId){
 		}
 	}
 }
+
+//Mark all items as read
+function markAllAsRead(){
+	items = $("#allItemsForm").serialize();
+	djajax("markRead", items);
+	items = $('.item').not('.read');
+	items.addClass('read');
+	items.find('.item_summary').not('collapsed').addClass('collapsed');
+	items.find('.hider').text("+");
+}

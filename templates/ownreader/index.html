@@ -13,6 +13,15 @@
 		<a class="symbol" href="{% url 'ownreader:toggleSidebar' %}"
 		    id="sidebarToggle" onclick="sidebarToggle(); return false;">&#128193;</a>
 	</li>
+	<li class="menu">
+		<form action="{% url 'ownreader:markRead' %}" method="post"
+		    id="allItemsForm">
+            {% csrf_token %}
+		    {{ formset }}
+		    <button class="symbol" onclick="markAllAsRead(); return false;">
+		        &#59146;
+		    </button>
+		</form>
 {% endblock %}
 
 {% block usermenu %}

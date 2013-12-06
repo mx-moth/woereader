@@ -11,10 +11,13 @@
   font-weight: normal;
   font-style: normal;
 }
-.menu a.symbol {
+.menu a.symbol,
+.menu button.symbol {
   font-family: 'EntypoRegular';
   font-size: 2em;
   height: 1em;
+  line-height: 1em;
+  background: none;
 }
 .errorlist {
   color: #ff0000;
@@ -50,11 +53,15 @@ nav {
   width: auto;
   position: relative;
 }
-.menu a {
+.menu a,
+.menu button {
   display: block;
   height: 2em;
-  padding-left: 0.15em;
-  padding-right: 0.15em;
+  padding-left: 0.15em !important;
+  padding-right: 0.15em !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border: none;
 }
 .menu:hover,
 .menu li:hover {
@@ -235,7 +242,7 @@ input[type=button],
 input[type=submit] {
   color: #ffffff;
   text-align: center;
-  background: #444444 !important;
+  background: #444444;
   height: 2em;
   line-height: 2em;
   cursor: pointer;
@@ -329,7 +336,6 @@ p.addendum,
 }
 .item .item_header .item_actions * {
   display: inline;
-  vertical-align: middle;
 }
 .item .item_header .item_actions .hider {
   width: 2em;
