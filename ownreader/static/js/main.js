@@ -1,11 +1,13 @@
 ////Page Setup
 var canTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints;
+var selected;
 $(document).ready(prepare);
 
 function prepare() {
 	addCaptions();
 	setupTouch();
 	setupMenus();
+	setupExpansion();
 	
 	//Makes small-screened devices ignore starting state of sidebar
 	if($('#smallscreen').css('visibility')=='visible')
@@ -68,13 +70,49 @@ function setupMenus() {
 	});
 }
 
+//Expand the first item if in collapsed-view
+function setupExpansion(){
+	if($('#wrapper').hasClass('collapse')){
+		selected = $('.item').first();
+		showItem($(selected));
+
+		$(document).keyup(function(e){
+			var code = e.keyCode || e.which;
+			if(code == '78')
+				nextItem();
+			else if(code == '80')
+				previousItem();
+		});
+	}
+}
+
+//Expand the next item on the page, hide the current, mark it as read
+function nextItem(){
+	if(!$(selected).hasClass('read'))
+		markAsRead(selected);
+	else
+		hideItem(selected);
+	if(!($(selected).is(":last-child"))){
+		selected = $(selected).next('.item');
+		showItem(selected);
+	}
+}
+
+//Expand the previous item on the page, hide the current
+function previousItem(){
+	if(!($(selected).is(":first-child"))){
+		hideItem(selected);
+		selected = $(selected).prev('.item');
+		showItem(selected);
+	}
+}
+
 //Show/hide the sidebar
 function sidebarToggle(){
-	if($('#wrapper').hasClass('sidebar')){
+	if($('#wrapper').hasClass('sidebar'))
 		$('#wrapper').removeClass('sidebar');
-	}else{
+	else
 		$('#wrapper').addClass('sidebar');
-	}
 	
 	//Deselect the Button
 	$('#sidebarToggle').blur();
@@ -87,14 +125,20 @@ function sidebarToggle(){
 //Show/hide items
 function toggleShow(itemId){
 	var item = '#' + itemId;
-	if($(item).hasClass('collapsed')){
-		$(item).find('.hider').text("-");
-		$(item).removeClass('collapsed');
-	}
-	else{
-		$(item).find('.hider').text("+");
-		$(item).addClass('collapsed');
-	}
+	if($(item).hasClass('collapsed'))
+		showItem(item);
+	else
+		hideItem(item);
+}
+
+function showItem(item){
+	$(item).find('.hider').text("-");
+	$(item).removeClass('collapsed');
+}
+
+function hideItem(item){
+	$(item).find('.hider').text("+");
+	$(item).addClass('collapsed');
 }
 
 
@@ -156,28 +200,29 @@ function djajax($url, $data){
 
 ////Methods that perform specific Client-Server communication
 
-//Toggle the 'read' status for an item
 function toggleRead(itemId){
-	djajax("toggleRead", { id: itemId });
 	var item = '#' + itemId;
-	if($(item).hasClass('read')){
-		$(item).removeClass('read');
-	}
-	else{
-		$(item).addClass('read');
-		if(!$(item).hasClass('collapsed')){
-			$(item).find('.hider').text("+");
-			$(item).addClass('collapsed');
-		}
-	}
+	if($(item).hasClass('read'))
+		markAsUnread(item);
+	else
+		markAsRead(item);
 }
 
-//Mark all items as read
+function markAsRead(item){
+	djajax("toggleRead", { id: $(item).attr('id'), read: "True" });
+	$(item).addClass('read');
+	hideItem(item);
+}
+
+function markAsUnread(item){
+	djajax("toggleRead", { id: $(item).attr('id'), read: "False" });
+	$(item).removeClass('read');
+}
+
 function markAllAsRead(){
 	items = $("#allItemsForm").serialize();
 	djajax("markRead", items);
 	items = $('.item').not('.read');
 	items.addClass('read');
-	items.addClass('collapsed');
-	items.find('.hider').text("+");
+	hideItem(items);
 }

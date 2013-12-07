@@ -55,19 +55,31 @@ def update(request):
     return redirect('/')
 
 
+#Marks an item with the read status requested if one is given, else toggles
 def toggleRead(request):
     if request.user.is_authenticated():
         if request.method == "POST":
             item = None
+            read = None
             try:
                 item = UserItem.objects.get(pk=request.POST['id'])
             except:
                 pass
+            try:
+                read = request.POST['read']
+            except:
+                pass
             if item is not None and item.user == request.user:
-                if item.read:
-                    item.read = False
+                if read is not None:
+                    if read == "True":
+                        item.read = True
+                    elif read == "False":
+                        item.read = False
                 else:
-                    item.read = True
+                    if item.read:
+                        item.read = False
+                    else:
+                        item.read = True
                 item.save()
     return redirect('/')
 
