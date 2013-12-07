@@ -78,10 +78,17 @@ function setupExpansion(){
 
 		$(document).keyup(function(e){
 			var code = e.keyCode || e.which;
-			if(code == '78')
-				nextItem();
-			else if(code == '80')
-				previousItem();
+			switch(code){
+				case 78:
+					nextItem();
+					break;
+				case 80:
+					previousItem();
+					break;
+				case 86:
+					openItem();
+					break;
+			}
 		});
 	}
 }
@@ -105,6 +112,11 @@ function previousItem(){
 		selected = $(selected).prev('.item');
 		showItem(selected);
 	}
+}
+
+//Opens the url of the currently selected item in a new tab
+function openItem(){
+	window.open($(selected).find('.item_title a').attr('href'));
 }
 
 //Show/hide the sidebar
