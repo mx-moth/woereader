@@ -216,6 +216,15 @@ form.aligned_div p {
   #wrapper.sidebar #mainwrapper {
     display: none;
   }
+  aside {
+    width: 100%;
+  }
+  .item {
+    display: none;
+  }
+  .item.selected {
+    display: block;
+  }
 }
 .ralign {
   text-align: right;

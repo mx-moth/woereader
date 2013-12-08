@@ -72,24 +72,29 @@ function setupMenus() {
 
 //Expand the first item if in collapsed-view
 function setupExpansion(){
-	if($('#wrapper').hasClass('collapse')){
-		selected = $('.item').first();
-		showItem($(selected));
+	selected = $('.item').first();
+	selected.addClass('selected');
 
-		$(document).keyup(function(e){
-			var code = e.keyCode || e.which;
-			switch(code){
-				case 78:
-					nextItem();
-					break;
-				case 80:
-					previousItem();
-					break;
-				case 86:
-					openItem();
-					break;
-			}
-		});
+	//Add the events
+	$(document).keyup(function(e){
+		var code = e.keyCode || e.which;
+		switch(code){
+			case 78:
+				nextItem();
+				break;
+			case 80:
+				previousItem();
+				break;
+			case 86:
+				openItem();
+				break;
+		}
+	});
+	$('.item').on("swipeleft", nextItem);
+	$('.item').on("swiperight", previousItem);
+
+	if($('#wrapper').hasClass('collapse')){
+		showItem($(selected));
 	}
 }
 
@@ -100,7 +105,9 @@ function nextItem(){
 	else
 		hideItem(selected);
 	if(!($(selected).is(":last-child"))){
+		selected.removeClass('selected');
 		selected = $(selected).next('.item');
+		selected.addClass('selected');
 		showItem(selected);
 	}
 }
@@ -109,7 +116,9 @@ function nextItem(){
 function previousItem(){
 	if(!($(selected).is(":first-child"))){
 		hideItem(selected);
+		selected.removeClass('selected');
 		selected = $(selected).prev('.item');
+		selected.addClass('selected');
 		showItem(selected);
 	}
 }
