@@ -35,40 +35,58 @@
 {% block wrapperclasses %}
     class="
     {% if showSidebar %}sidebar{% endif %}
-    {% if viewMode == "collapsed" %}collapse{% endif %}
+    {% if viewMode == "CO" %}collapse{% endif %}
     "
 {% endblock %}
 {% block content %}
+{% if items.has_previous %}
+<div id="previous_page">
+    <form action="/" method="post">
+        {% csrf_token %}
+        <input name="page" type="hidden" value="{{ items.previous_page_number }}" />
+        <input class="widebutton" type="submit" value="Newer Entries">
+    </form>
+</div>
+{% endif %}
 {% for item in items %}
 <div class="item
     {% if item.read %}read{% endif %}
-    {% if viewMode != "expanded" %}collapsed{% endif %}"
-    id="{{ item.id }}">
+    {% if viewMode != "EX" %}collapsed{% endif %}"
+    id="{{ item.pk }}">
     <div class="item_header">
         <div class="item_title">
             <h3>
-                <a href="{{ item.link }}">{{ item.title }}</a>
+                <a href="{{ item.item.url }}">{{ item.item.title }}</a>
             </h3>
         </div>
         <div class="item_actions">
-            <button onclick="toggleShow({{ item.id }})" class="hider">
+            <button onclick="toggleShow({{ item.pk }})" class="hider">
                 {% if viewMode == "expanded" %}-
                 {% else %}+
                 {% endif %}
             </button>
             <form action={% url 'ownreader:toggleRead' %} method="post">
                 {% csrf_token %}
-                <input name="id" type="hidden" value="{{ item.id }}" />
+                <input name="id" type="hidden" value="{{ item.pk }}" />
                 <input type="submit" value="Read"
-                    onclick="toggleRead({{ item.id }}); return false;">
+                    onclick="toggleRead({{ item.pk }}); return false;">
             </form>
         </div>
     </div>
     <div class="item_summary">
-        {{item.summary|safe}}
+        {{item.item.content|safe}}
     </div>
 </div>
 {% endfor %}
+{% if items.has_next %}
+<div id="next_page">
+    <form action="/" method="post">
+        {% csrf_token %}
+        <input name="page" type="hidden" value="{{ items.next_page_number }}" />
+        <input class="widebutton" type="submit" value="Older Entries">
+    </form>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block sidebar %}

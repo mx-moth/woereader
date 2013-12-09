@@ -49,4 +49,20 @@ class UserPrefs(models.Model):
     user = models.ForeignKey(User)
     showUnread = models.BooleanField(default=False)
     showSidebar = models.BooleanField(default=True)
-    viewMode = models.TextField(default="expanded")
+    COLLAPSED = 'CO'
+    EXPANDED = 'EX'
+    TALL = 'TA'
+    WIDE = 'WI'
+    VIEWMODE_CHOICES = (
+        (COLLAPSED, 'Collapsed'),
+        (EXPANDED, 'Expanded'),
+        (TALL, 'Tall'),
+        (WIDE, 'Wide'),
+    )
+    viewMode = models.CharField(max_length=2,
+                                choices=VIEWMODE_CHOICES,
+                                default=EXPANDED)
+    ITEMNUMBER_CHOICES = (
+            (10, 10), (20, 20), (25, 25), (30, 30), (40, 40), (50, 50),
+            (60, 60), (70, 70), (75, 75), (80, 80), (90, 90), (100, 100))
+    itemsPerPage = models.IntegerField(choices=ITEMNUMBER_CHOICES, default=25)

@@ -5,6 +5,7 @@ from ownreader.models import UserItem
 from ownreader.models import UserPrefs
 from ownreader.tasks import CeleryUpdater
 from ownreader.forms import MarkAllReadFormSet
+from django.core.paginator import Paginator, EmptyPage
 
 
 @ensure_csrf_cookie
@@ -12,6 +13,7 @@ def index(request):
     if not request.user.is_authenticated():
         return render(request, 'ownreader/welcome.html')
     else:
+        #Grab the current user's preferences for the layout
         prefs = None
         try:
             prefs = UserPrefs.objects.get(user=request.user)
@@ -20,32 +22,45 @@ def index(request):
         if prefs is None:
             prefs = UserPrefs(user=request.user)
             prefs.save()
+
+        #Grab the items to show, depending on read status preference
         if prefs.showUnread:
-            items = UserItem.objects.filter(
+            items = UserItem.objects.select_related('item').filter(
                 user=request.user
             ).order_by(
                 '-item__published')
         else:
-            items = UserItem.objects.filter(
+            items = UserItem.objects.select_related('item').filter(
                 user=request.user
             ).filter(
                 read=False
             ).order_by(
                 '-item__published')
-        allItems = MarkAllReadFormSet(queryset=items)
-        context = {'items': [],
+
+        #Paginate the items, check if a particular page was requested
+        paginator = Paginator(items, 25)
+        currentItems = None;
+        try:
+            page = request.POST['page']
+        except:
+            page = 1;
+        try:
+            currentItems = paginator.page(page)
+        except EmptyPage:
+            currentItems = paginator.page(paginator.num_pages)
+        except:
+            pass
+        if currentItems is None:
+            currentItems = paginator.page(1)
+
+        formsetItems = items.filter(id__in=[item.id for item in currentItems])
+        allItems = MarkAllReadFormSet(queryset=formsetItems)
+
+        context = {'items': currentItems,
                    'formset': allItems,
                    'showUnread': prefs.showUnread,
                    'viewMode': prefs.viewMode,
                    'showSidebar': prefs.showSidebar}
-        for uitem in items:
-            item = uitem.item
-            context['items'].append({
-                'id': uitem.pk,
-                'read': uitem.read,
-                'link': item.url,
-                'title': item.title,
-                'summary': item.content})
         return render(request, 'ownreader/index.html', context)
 
 
