@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block aligner %}{% endblock %}
+{% block aligner %}id="itemWrapper"{% endblock %}
 
 {% block appmenu %}
 	<li class="menu">
@@ -11,7 +11,9 @@
 	</li>
 	<li class="menu">
 		<a class="symbol" href="{% url 'ownreader:toggleSidebar' %}"
-		    id="sidebarToggle" onclick="sidebarToggle(); return false;">&#128193;</a>
+		    id="sidebarToggle" onclick="sidebarToggle(); return false;">
+		    &#128193;
+		</a>
 	</li>
 	<li class="menu">
 		<form action="{% url 'ownreader:markRead' %}" method="post"
@@ -25,25 +27,26 @@
 {% endblock %}
 
 {% block usermenu %}
-    {% if showUnread %}
-	    <li><a href="{% url 'ownreader:toggleUnread' %}">Hide Unread</a></li>
+    {% if prefs.showRead %}
+	    <li><a href="{% url 'ownreader:toggleShowRead' %}">Hide Read</a></li>
 	{% else %}
-	    <li><a href="{% url 'ownreader:toggleUnread' %}">View Unread</a></li>
+	    <li><a href="{% url 'ownreader:toggleShowRead' %}">View Read</a></li>
 	{% endif %}
 {% endblock %}
 
 {% block wrapperclasses %}
     class="
-    {% if showSidebar %}sidebar{% endif %}
-    {% if viewMode == "CO" %}collapse{% endif %}
+    {% if prefs.showSidebar %}sidebar{% endif %}
+    {% if prefs.viewMode == "CO" %}collapse{% endif %}
     "
 {% endblock %}
 {% block content %}
 {% if items.has_previous %}
-<div id="previous_page">
+<div id="previous_page" class="non-js">
     <form action="/" method="post">
         {% csrf_token %}
-        <input name="page" type="hidden" value="{{ items.previous_page_number }}" />
+        <input name="page" type="hidden"
+            value="{{ items.previous_page_number }}" />
         <input class="widebutton" type="submit" value="Newer Entries">
     </form>
 </div>
@@ -51,7 +54,7 @@
 {% for item in items %}
 <div class="item
     {% if item.read %}read{% endif %}
-    {% if viewMode != "EX" %}collapsed{% endif %}"
+    {% if prefs.viewMode != "EX" %}collapsed{% endif %}"
     id="{{ item.pk }}">
     <div class="item_header">
         <div class="item_title">
@@ -61,7 +64,7 @@
         </div>
         <div class="item_actions">
             <button onclick="toggleShow({{ item.pk }})" class="hider">
-                {% if viewMode == "expanded" %}-
+                {% if prefs.viewMode == "EX" %}-
                 {% else %}+
                 {% endif %}
             </button>
@@ -79,10 +82,15 @@
 </div>
 {% endfor %}
 {% if items.has_next %}
-<div id="next_page">
+<div id="next_page" class="non-js">
     <form action="/" method="post">
         {% csrf_token %}
-        <input name="page" type="hidden" value="{{ items.next_page_number }}" />
+        <input name="items" id="itemsPerPage" type="hidden"
+            value="{{ prefs.itemsPerPage }}" />
+        <input name="showRead" id="showRead" type="hidden"
+            value="{{ prefs.showRead }}" />
+        <input name="page" id="newPage" type="hidden"
+            value="{{ items.next_page_number }}" />
         <input class="widebutton" type="submit" value="Older Entries">
     </form>
 </div>

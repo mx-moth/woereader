@@ -9,7 +9,7 @@ urlpatterns = patterns(
         name='addFeed'),
     url(r'^update$', 'ownreader.views.update', name='UserUpdate'),
     url(r'^toggleRead$', 'ownreader.views.toggleRead', name="toggleRead"),
-    url(r'^toggleUnread$', 'ownreader.views.toggleUnread', name="toggleUnread"),
+    url(r'^toggleShowRead$', 'ownreader.views.toggleShowRead', name="toggleShowRead"),
     url(r'^toggleSidebar$', 'ownreader.views.toggleSidebar', name="toggleSidebar"),
     url(r'^markRead$', 'ownreader.views.markRead', name="markRead"),
 )

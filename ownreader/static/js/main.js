@@ -1,13 +1,34 @@
 ////Page Setup
 var canTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints;
 var selected;
+var showReadItems;
+var itemsPerPage;
+var newPage;
+var newestItem;
+var loading = false;
 $(document).ready(prepare);
+$(window).on('load resize scroll', loadMore);
 
 function prepare() {
 	addCaptions();
 	setupTouch();
 	setupMenus();
 	setupExpansion();
+	setupHotkeys();
+	
+	$('.non-js').css('display', 'none');
+
+	//showRead and itemsPerPage should change only on page reload
+	//newestItem is taken so that pages are calculated from there by server
+	//newPage is recalculated when new content is taken in
+	if($('#next_page').length != 0){
+		showReadItems = $('#showRead').val();
+		itemsPerPage = $('#itemsPerPage').val();
+		newPage = $('#newPage').val();
+		newestItem = $('.item').first().attr('id');
+	}
+
+	loadMore();
 	
 	//Makes small-screened devices ignore starting state of sidebar
 	if($('#smallscreen').css('visibility')=='visible')
@@ -15,7 +36,7 @@ function prepare() {
 }
 
 
-////UI  setup functions
+//UI  setup functions
 
 //Add touch functionality if present
 function setupTouch() {
@@ -75,7 +96,12 @@ function setupExpansion(){
 	selected = $('.item').first();
 	selected.addClass('selected');
 
-	//Add the events
+	if($('#wrapper').hasClass('collapse'))
+		showItem($(selected));
+}
+
+//Add hotkeys/gestures for non-touch/mouse interaction
+function setupHotkeys(){
 	$(document).keyup(function(e){
 		var code = e.keyCode || e.which;
 		switch(code){
@@ -92,10 +118,6 @@ function setupExpansion(){
 	});
 	$('.item').on("swipeleft", nextItem);
 	$('.item').on("swiperight", previousItem);
-
-	if($('#wrapper').hasClass('collapse')){
-		showItem($(selected));
-	}
 }
 
 //Expand the next item on the page, hide the current, mark it as read
@@ -162,15 +184,95 @@ function hideItem(item){
 	$(item).addClass('collapsed');
 }
 
+////Grab the next page's items if 5th-to-last item is in view
+function loadMore(){
+	//Stop the function if we're already loading new items
+	if(loading)
+		return;
+
+	//Stop the function if there's nothing to load
+	if($('#next_page').length == 0)
+		return;
+
+	//Stop the function if the 5th-to-last item is not in view
+	itemToCheck = $('.item').get(-5);
+	if(!isElementVisible(itemToCheck))
+		return;
+
+	loading = true;
+
+	//Replaces the formset with the new one, appends the new items
+	var update = function(data, textStatus, xhr){
+		var $response = data;
+
+		var formset = $('<div />').html(data).find('#allItemsForm').html();
+		var newItems = $('<div />').html(data).find('#itemWrapper').html();
+
+		//Remove the new page loader form
+		$('#next_page').remove();
+		$('#allItemsForm').html(formset);
+		$('#itemWrapper').append(newItems);
+		//Get the value of the next page to load
+		newPage = $('#newPage').val();
+		//Hide the non-js elements
+		$('.non-js').css('display', 'none');
+		//Add captions for any new items retrieved
+		addCaptions();
+		loading = false;
+	};
+
+	djajax(
+		"",
+		{	page: newPage,
+			showRead: showReadItems,
+			pageSize: itemsPerPage,
+			adding: "True",
+			newest: newestItem},
+		update);
+}
+
+//Check if an element is in view
+function isElementVisible(el){
+		var eap,
+		rect     = el.getBoundingClientRect(),
+		docEl    = document.documentElement,
+		vWidth   = window.innerWidth || docEl.clientWidth,
+		vHeight  = window.innerHeight || docEl.clientHeight,
+		efp      = function (x, y) { return document.elementFromPoint(x, y) },
+		contains = "contains" in el ? "contains" : "compareDocumentPosition",
+		has      = contains == "contains" ? 1 : 0x10;
+
+	// Return false if it's not in the viewport
+	if (rect.right < 0 || rect.bottom < 0
+			|| rect.left > vWidth || rect.top > vHeight)
+		return false;
+
+	// Return true if any of its four corners are visible
+	return (
+		  (eap = efp(rect.left,  rect.top)) == el
+		|| el[contains](eap) == has
+		||  (eap = efp(rect.right, rect.top)) == el
+		|| el[contains](eap) == has
+		||  (eap = efp(rect.right, rect.bottom)) == el
+		|| el[contains](eap) == has
+		||  (eap = efp(rect.left,  rect.bottom)) == el
+		|| el[contains](eap) == has
+	);
+}
+
 
 
 ////Appearance fixer functions
 
 //Remove the reqirement for mousing-over to get the mouse-over text from comics
 function addCaptions(){
-	var str = $('body').html();
-	var re = /(<img[^>]*title=")([^"]*)("[^>]*>)/gi;
-	$('body').html(str.replace(re, "$1$2$3<br /><p>$2</p><br />"));
+	var imgs = $('.item').find('img[title]').not('.alttaken');
+	imgs.each(function(){
+		curImg = $(this);
+		curImg.parent().append(
+			"<div class=\"alttext\">", curImg.attr('title'), "</div>");
+		curImg.addClass('alttaken');
+	});
 }
 
 
@@ -186,7 +288,8 @@ function getCookie(name) {
             var cookie = jQuery.trim(cookies[i]);
             // Does this cookie string begin with the name we want?
             if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                cookieValue = decodeURIComponent(
+                	cookie.substring(name.length + 1));
                 break;
             }
         }
@@ -200,8 +303,8 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
-//Pass data to the url via ajax easily
-function djajax($url, $data){
+//Pass data to the url via ajax easily, execute function on success
+function djajax($url, $data, successFunction){
 	var csrftoken = getCookie('csrftoken');
 	$.ajax({
 		url: $url,
@@ -212,7 +315,8 @@ function djajax($url, $data){
 				xhr.setRequestHeader("X-CSRFToken", csrftoken);
 			}
 		},
-		data: $data
+		data: $data,
+		success: successFunction
 	});
 	return false;
 }
@@ -224,7 +328,7 @@ function djajax($url, $data){
 function toggleRead(itemId){
 	var item = '#' + itemId;
 	if($(item).hasClass('read'))
-		markAsUnread(item);
+		markAsRead(item);
 	else
 		markAsRead(item);
 }
@@ -235,7 +339,7 @@ function markAsRead(item){
 	hideItem(item);
 }
 
-function markAsUnread(item){
+function markAsRead(item){
 	djajax("toggleRead", { id: $(item).attr('id'), read: "False" });
 	$(item).removeClass('read');
 }
