@@ -339,7 +339,7 @@ function markAsRead(item){
 	hideItem(item);
 }
 
-function markAsRead(item){
+function markAsUnread(item){
 	djajax("toggleRead", { id: $(item).attr('id'), read: "False" });
 	$(item).removeClass('read');
 }
