@@ -16,7 +16,7 @@ function prepare() {
 	setupExpansion();
 	setupHotkeys();
 	
-	$('.non-js').css('display', 'none');
+	$('body').addClass('js');
 
 	//showRead and itemsPerPage should change only on page reload
 	//newestItem is taken so that pages are calculated from there by server
@@ -212,10 +212,10 @@ function loadMore(){
 		$('#next_page').remove();
 		$('#allItemsForm').html(formset);
 		$('#itemWrapper').append(newItems);
+		//Remove the previous page loader form
+		$('#previous_page').remove();
 		//Get the value of the next page to load
 		newPage = $('#newPage').val();
-		//Hide the non-js elements
-		$('.non-js').css('display', 'none');
 		//Add captions for any new items retrieved
 		addCaptions();
 		loading = false;

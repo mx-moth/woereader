@@ -11,6 +11,9 @@
   font-weight: normal;
   font-style: normal;
 }
+.js .non-js {
+  display: none;
+}
 .menu a.symbol,
 .menu button.symbol {
   font-family: 'EntypoRegular';
