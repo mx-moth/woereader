@@ -15,6 +15,8 @@
 	padding: 0px;
 	overflow-wrap: break-word;
 	word-wrap: break-word;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
 }
 @font-face {
 	font-family: 'EntypoRegular';
@@ -238,6 +240,9 @@ html.touch #navspacer {
 	.item.selected {
 		display: block;
 	}
+	.item_title {
+		word-break: break-all;
+	}
 }
 .ralign {
 	text-align: right;
@@ -248,8 +253,6 @@ html.touch #navspacer {
 button, .button, input {
 	border: 1px solid #000;
 	font-size: 1em;
-	box-sizing: content-box;
-	-moz-box-sizing: content-box;
 }
 .widebutton{
 	width: 100%;
@@ -316,7 +319,6 @@ p.addendum, .aligned_div p.addendum{
 			display: block;
 			max-width: 100%;
 			width: 100% !important; //override inline styles
-			overflow-wrap: break-word;
 			word-break: break-all;
 		}
 		padding-top: 1em;
@@ -348,8 +350,8 @@ p.addendum, .aligned_div p.addendum{
 			padding-right: 1em;
 			margin-left: auto;
 			text-align: right;
-			width: 5em;
-			min-width: 5em;
+			width: 6em;
+			min-width: 6em;
 			* {
 				display: inline;
 			}

@@ -132,6 +132,7 @@ function nextItem(){
 		selected.addClass('selected');
 		showItem(selected);
 	}
+	loadMore();
 }
 
 //Expand the previous item on the page, hide the current
@@ -219,6 +220,8 @@ function loadMore(){
 		//Add captions for any new items retrieved
 		addCaptions();
 		loading = false;
+		//Check that we've fetched enough content
+		loadMore();
 	};
 
 	djajax(
