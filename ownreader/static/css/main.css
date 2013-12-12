@@ -149,13 +149,17 @@ nav {
   align-items: center;
   justify-content: center;
 }
+#wrapper #aligned_div > * {
+  padding: 0em 2em;
+}
 #wrapper #aligned_div form {
   max-width: 40em;
   width: 100%;
+  padding: 0em 1em;
 }
 #wrapper #aligned_div form p {
   display: flex;
-  padding: 0.5em 1em;
+  padding: 0.5em 0em;
 }
 #wrapper #aligned_div form p * {
   min-width: 10em;
@@ -176,7 +180,10 @@ nav {
 }
 #wrapper #aligned_div form #recaptcha_area {
   margin-left: auto;
-  margin-right: 1em;
+}
+#wrapper #aligned_div form #recaptcha_area,
+#wrapper #aligned_div form #recaptcha_area #recaptcha_table {
+  max-width: 100%;
 }
 #wrapper #aligned_div form label[for="id_captcha"] {
   display: none;

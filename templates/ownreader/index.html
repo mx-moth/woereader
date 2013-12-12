@@ -1,4 +1,10 @@
 {% extends "base.html" %}
+{% block scripts %}
+	<script src="{{ STATIC_URL }}js/jquery.mobile-1.3.2.custom.min.js"></script>
+	<script src="{{ STATIC_URL }}js/jquery.django-ajax.js"></script>
+	<script src="{{ STATIC_URL }}js/jquery.infinite-scroll.js"></script>
+	<script src="{{ STATIC_URL }}js/feed.js"></script>
+{% endblock scripts %}
 
 {% block appmenu %}
 	<li class="menu">

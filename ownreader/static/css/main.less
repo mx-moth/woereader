@@ -136,12 +136,14 @@ nav {
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		& > * { padding: 0em 2em; }
 		form {
 			max-width: 40em;
 			width: 100%;
+			padding: 0em 1em;
 			p{
 				display: flex;
-				padding: 0.5em 1em;
+				padding: 0.5em 0em;
 				* {
 					min-width: 10em;
 					line-height: 2em;
@@ -160,7 +162,7 @@ nav {
 			}
 			#recaptcha_area {
 				margin-left: auto;
-				margin-right: 1em;
+				&, #recaptcha_table { max-width: 100%; }
 			}
 			label[for="id_captcha"] {
 				display:none;
