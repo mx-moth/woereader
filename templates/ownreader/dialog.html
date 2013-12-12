@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="aligned_div">
-    {% block textcontent %}
-    {% endblock %}
-</div>
-{% endblock %}
+    <div id="aligned_div">
+        {% block textcontent %}
+        {% endblock %}
+        {% block extracontent %}
+        {% endblock extracontent %}
+    </div>
+{% endblock content %}

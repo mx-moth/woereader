@@ -1,19 +1,17 @@
-{% extends "base.html" %}
-{% block content %}
-<form class="aligned_div" method="post" action=".">
-    {% csrf_token %}
-        {% if form.errors %}
-            {{ form.errors|pluralize }}
-        {% endif %}
-        {% for field in form  %}
-            {{ field.error }}
-            {{ field.field.error }}
-        {% endfor %}
-        {{ form.non_field_errors }}
-        {{ form.as_p }}
-    {% block formcontent %}
-    {% endblock %}
-</form>
-    {% block nonformcontent %}
-    {% endblock %}
-{% endblock %}
+{% extends "ownreader/dialog.html" %}
+{% block textcontent %}
+    <form method="post" action=".">
+        {% csrf_token %}
+            {% if form.errors %}
+                {{ form.errors|pluralize }}
+            {% endif %}
+            {% for field in form  %}
+                {{ field.error }}
+                {{ field.field.error }}
+            {% endfor %}
+            {{ form.non_field_errors }}
+            {{ form.as_p }}
+        {% block formcontent %}
+        {% endblock formcontent%}
+    </form>
+{% endblock textcontent %}

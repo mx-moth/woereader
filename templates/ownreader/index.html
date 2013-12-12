@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-{% block aligner %}id="itemWrapper"{% endblock %}
-
 {% block appmenu %}
 	<li class="menu">
 		<a class="symbol" href="{% url 'ownreader:addFeed' %}">&#8862;</a>
@@ -40,50 +38,56 @@
     {% if prefs.viewMode == "CO" %}collapse{% endif %}
     "
 {% endblock %}
+
 {% block content %}
+<div id="asidewrapper">
+	<aside>
+		<p>
+			-----sidebar-----
+		</p>
+	</aside>
+</div>
+<div id="itemwrapper">
 {% if items.has_previous %}
-<div id="previous_page" class="non-js">
-    <form action="/" method="post">
+    <form action="/" method="post" id="previous_page" class="non-js">
         {% csrf_token %}
         <input name="page" type="hidden"
             value="{{ items.previous_page_number }}" />
         <input class="widebutton" type="submit" value="Newer Entries">
     </form>
-</div>
 {% endif %}
 {% for item in items %}
-<div class="item
-    {% if item.read %}read{% endif %}
-    {% if prefs.viewMode != "EX" %}collapsed{% endif %}"
-    id="{{ item.pk }}">
-    <div class="item_header">
-        <div class="item_title">
-            <h3>
-                <a href="{{ item.item.url }}">{{ item.item.title }}</a>
-            </h3>
+    <div class="item
+        {% if item.read %}read{% endif %}
+        {% if prefs.viewMode != "EX" %}collapsed{% endif %}"
+        id="{{ item.pk }}">
+        <div class="item_header">
+            <div class="item_title">
+                <h3>
+                    <a href="{{ item.item.url }}">{{ item.item.title }}</a>
+                </h3>
+            </div>
+            <div class="item_actions">
+                <button onclick="toggleShow({{ item.pk }})" class="hider">
+                    {% if prefs.viewMode == "EX" %}-
+                    {% else %}+
+                    {% endif %}
+                </button>
+                <form action={% url 'ownreader:toggleRead' %} method="post">
+                    {% csrf_token %}
+                    <input name="id" type="hidden" value="{{ item.pk }}" />
+                    <input type="submit" value="Read"
+                        onclick="toggleRead({{ item.pk }}); return false;">
+                </form>
+            </div>
         </div>
-        <div class="item_actions">
-            <button onclick="toggleShow({{ item.pk }})" class="hider">
-                {% if prefs.viewMode == "EX" %}-
-                {% else %}+
-                {% endif %}
-            </button>
-            <form action={% url 'ownreader:toggleRead' %} method="post">
-                {% csrf_token %}
-                <input name="id" type="hidden" value="{{ item.pk }}" />
-                <input type="submit" value="Read"
-                    onclick="toggleRead({{ item.pk }}); return false;">
-            </form>
+        <div class="item_summary">
+            {{item.item.content|safe}}
         </div>
     </div>
-    <div class="item_summary">
-        {{item.item.content|safe}}
-    </div>
-</div>
 {% endfor %}
 {% if items.has_next %}
-<div id="next_page" class="non-js">
-    <form action="/" method="post">
+    <form action="/" method="post" id="next_page" class="non-js">
         {% csrf_token %}
         <input name="items" id="itemsPerPage" type="hidden"
             value="{{ prefs.itemsPerPage }}" />
@@ -93,16 +97,7 @@
             value="{{ items.next_page_number }}" />
         <input class="widebutton" type="submit" value="Older Entries">
     </form>
-</div>
 {% endif %}
+</div>
 {% endblock %}
 
-{% block sidebar %}
-<div id="asidewrapper">
-		<aside>
-			<p>
-				-----sidebar-----
-			</p>
-		</aside>
-	</div>
-{% endblock %}

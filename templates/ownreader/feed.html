@@ -4,29 +4,33 @@
     <input type="hidden" name="{{ stage_field }}" value="2" />
     <input type="hidden" name="{{ hash_field }}" value="{{ hash_value }}" />
 {% endblock %}
-{% block nonformcontent %}
-<h1 class="centredText">
-    <a href="{{ feed }}">
-        {{ parsed.title }}
-        {% if parsed.description %}
-            ({{ parsed.description }})
-            {% endif %}
-        {% if parsed.invalid %}
-          {{ parsed.invalid }}
-        {% endif %}
-</a></h1><br />
-    {% for key, item in parsed.entries.items %}
-    <div class="item">
-        <div class="item_header">
-            <div class="item_title">
-                <h3>
-                    <a href="{{ item.link }}">{{ item.title }} ({{ item.updated }})</a>
-                </h3>
+
+{% block extracontent %}
+    <div id="itemWrapper">
+        <h1 class="centredText">
+            <a href="{{ feed }}">
+                {{ parsed.title }}
+                {% if parsed.description %}
+                    ({{ parsed.description }})
+                    {% endif %}
+                {% if parsed.invalid %}
+                {{ parsed.invalid }}
+                {% endif %}
+            </a>
+        </h1><br />
+        {% for key, item in parsed.entries.items %}
+        <div class="item">
+            <div class="item_header">
+                <div class="item_title">
+                    <h3>
+                        <a href="{{ item.link }}">{{ item.title }} ({{ item.updated }})</a>
+                    </h3>
+                </div>
+            </div>
+            <div class="item_summary">
+                {{ item.content|safe }}
             </div>
         </div>
-        <div class="item_summary">
-            {{ item.content|safe }}
-        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-{% endblock %}
+{% endblock extracontent %}

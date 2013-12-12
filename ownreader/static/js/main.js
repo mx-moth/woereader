@@ -1,5 +1,4 @@
 ////Page Setup
-var canTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints;
 var selected;
 var showReadItems;
 var itemsPerPage;
@@ -11,7 +10,6 @@ $(window).on('load resize scroll', loadMore);
 
 function prepare() {
 	addCaptions();
-	setupTouch();
 	setupMenus();
 	setupExpansion();
 	setupHotkeys();
@@ -36,15 +34,7 @@ function prepare() {
 }
 
 
-//UI  setup functions
-
-//Add touch functionality if present
-function setupTouch() {
-	if(canTouch) {
-		$("html").addClass("touch");
-	}
-}
-
+//----------------------------UI  setup functions----------------------------
 //Show menus on demand, hide all others
 function menuShow($this){
 	$this.find('ul').css('display', 'block');
@@ -142,8 +132,8 @@ function previousItem(){
 		selected.removeClass('selected');
 		selected = $(selected).prev('.item');
 		selected.addClass('selected');
-		showItem(selected);
 	}
+	showItem(selected); //If there is only one item, toggles collapsing
 }
 
 //Opens the url of the currently selected item in a new tab
@@ -207,12 +197,12 @@ function loadMore(){
 		var $response = data;
 
 		var formset = $('<div />').html(data).find('#allItemsForm').html();
-		var newItems = $('<div />').html(data).find('#itemWrapper').html();
+		var newItems = $('<div />').html(data).find('#itemwrapper').html();
 
 		//Remove the new page loader form
 		$('#next_page').remove();
 		$('#allItemsForm').html(formset);
-		$('#itemWrapper').append(newItems);
+		$('#itemwrapper').append(newItems);
 		//Remove the previous page loader form
 		$('#previous_page').remove();
 		//Get the value of the next page to load
@@ -273,7 +263,7 @@ function addCaptions(){
 	imgs.each(function(){
 		curImg = $(this);
 		curImg.parent().append(
-			"<div class=\"alttext\">", curImg.attr('title'), "</div>");
+			"<div class=\"alttext\">" + curImg.attr('title') + "</div>");
 		curImg.addClass('alttaken');
 	});
 }
@@ -331,7 +321,7 @@ function djajax($url, $data, successFunction){
 function toggleRead(itemId){
 	var item = '#' + itemId;
 	if($(item).hasClass('read'))
-		markAsRead(item);
+		markAsUnread(item);
 	else
 		markAsRead(item);
 }

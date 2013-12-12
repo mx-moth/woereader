@@ -10,13 +10,14 @@
 @size-item:      55em;
 
 * {
-	//font-family: 'Liberation Sans', 'droid sans', 'helvetica', 'arial', sans-serif;
+	font-family: 'Liberation Sans', 'droid sans', 'helvetica', 'arial', sans-serif;
 	margin: 0px;
 	padding: 0px;
 	overflow-wrap: break-word;
 	word-wrap: break-word;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
+	text-decoration: none;
 }
 @font-face {
 	font-family: 'EntypoRegular';
@@ -28,33 +29,30 @@
 	font-weight: normal;
 	font-style: normal;
 }
-.js .non-js {
-	display: none;
-}
-.menu a.symbol, .menu button.symbol {
-	font-family: 'EntypoRegular';
-	font-size: 2em;
-	height: 1em;
-	line-height: 1em;
-	background: none;
-}
-.errorlist{
-	color: @col-error;
-}
-body, html {
-	background-color: @col-bg;
-	height: 100%;
-}
-a {
-	text-decoration: none;
-	color: @col-links;
-}
+body { background-color: @col-bg; }
+.js .non-js { display: none; }
+.leftfloat { float: left; }
+.rightfloat { float: right; }
+.errorlist{ color: @col-error; }
+p { margin:0; }
+a { color: @col-links; }
 ul {
 	margin:0;
 	padding:0;
 }
-p {
-	margin:0;
+button, .button, input {
+	border: 1px solid #000;
+	font-size: 1em;
+	height: 2em;
+}
+.widebutton{
+	width: 100%;
+}
+button, .button, input[type=button], input[type=submit] {
+	color: @col-links;
+	background: @col-btn;
+	cursor: pointer;
+	text-align: center;
 }
 nav {
 	min-width: 10em;
@@ -62,238 +60,135 @@ nav {
 	background-color: @col-btn;
 	width: 100%;
 }
-.menu, .menu li {
+.menu {
 	background-color: @col-btn;
 	float: left;
 	line-height: 2em;
 	list-style-type: none;
 	width: auto;
-	position: relative;
-}
-.menu a, .menu button {
-	display: block;
-	height: 2em;
-	padding-left: 0.15em !important;
-	padding-right: 0.15em !important;
-	padding-top: 0 !important;
-	padding-bottom: 0 !important;
-	border: none;
-}
-.menu:hover, .menu li:hover {
-	background-color: @col-btnH;
-}
-.menu:hover ul {
-	display:block;
-}
-.menu ul {
-	display:none;
-	position: fixed;
-	z-index: 2;
-}
-.menu li {
-	display: block;
-	float: none;
-}
-.leftfloat {
-	float: left;
-}
-.rightfloat {
-	float: right;
-}
-.rightfloat li {
-}
-.rightfloat li ul {
-	right: 0px;
-}
-#wrapper {
-	height: 100%;
-	width: 100%;
-	display: table;
-}
-#asidewrapper {
-	min-width: 20em;
-	display: none;
-	height: 100%;
-	vertical-align: top;
-}
-#wrapper.sidebar #asidewrapper{
-	display: table-cell;
-}
-#mainwrapper{
-	vertical-align: top;
-	display: table-cell;
-	width: 100%;
-}
-aside{
-	width: 20em;
-	height: 100%;
-	display: table-cell;
-	vertical-align: top;
-	position: fixed;
-	border-right: 1px solid @col-txt;
-	color: @col-txt;
-	background: @col-bg2;
-}
-#main {
-	background-color: @col-bg2;
-	color: @col-txt;
-	display: table;
-	height: 100%;
-	margin: auto;
-	max-width: @size-item;
-	text-align: left;
-	width: 100%;
-}
-html.touch nav{
-	font-size: 1.25em;
-}
-html.touch #navspacer {
-	height: 2.5em;
-}
-#main > * {
-	background-color: @col-bg2;
-}
-#outer_aligner {
-	height: 100%;
-	width: 100%;
-	display: table-row;
-}
-#inner_aligner {
-	display: table-cell;
-	vertical-align: middle;
-	width: 100%;
-}
-#navspacer {
-	display: table-row;
-	height: 2em;
-}
-.aligned_div form, form.aligned_div{
-	text-align:left;
-}
-.aligned_div form p, form.aligned_div p{
-	display: table-row;
-}
-.aligned_div {
-	text-align:center;
-	margin-left: auto;
-	margin-right: auto;
-	width: 20em;
-}
-.aligned_div p {
-	display: inline-block;
-	font-size: 1em;
-	line-height: 2em;
-}
-.aligned_div p label {
-	display: table-cell;
-	width: 10em;
-	padding-bottom:0.2em;
-}
-.aligned_div p input, .aligned_div p a {
-	font-size: 1em;
-	display: table-cell;
-	width: 10em;
-}
-.aligned_div input[type=submit] {
-	margin-top:1em;
-	margin-bottom:1em;
-	float: right;
-}
-@media screen and (min-width: 30em) {
-	.aligned_div p input[type=text],
-	.aligned_div p input[type=password],
-	.aligned_div p input[type=url],
-	.aligned_div p input[type=email]{
-		width: 20em;
+	&, & li {
+		background-color: @col-btn;
+		display: block;
+		position: relative;
 	}
-	.aligned_div {
-		width: 30em;
+	li {
+		float: none;
 	}
-	#recaptcha_widget_div {
-		margin-left: 10em;
+	&:hover, & li:hover{
+		background-color: @col-btnH;
 	}
-	.aligned_div p input[type=submit] {
-		margin-left: 10em;
+	a, button {
+		display: block;
+		height: 2em;
+		padding: 0px 0.15em !important;
+		border: none;
 	}
-	p.addendum{
-		margin-left: 5em;
-		margin-right: 5em;
+	.symbol {
+		font-family: 'EntypoRegular';
+		font-size: 2.5em;
+		height: 1em;
+		line-height: 1em;
+		background: none;
 	}
-}
-#smallscreen {
-	visibility: hidden;
-}
-@media screen and (max-width: 40em) {
-	//Easy way to tell JS that viewport < 40em
-	#smallscreen {
-		visibility: visible;
-	}
-	#wrapper.sidebar #mainwrapper {
+	ul {
 		display: none;
+		position: fixed;
+		z-index: 2;
 	}
-	aside {
-		width: 100%;
-	}
-	.item {
-		display: none;
-	}
-	.item.selected {
+	&:hover ul {
 		display: block;
 	}
-	.item_title {
-		word-break: break-all;
+	.rightfloat & ul{
+		right: 0px;
+		text-align: right;
 	}
 }
-.ralign {
-	text-align: right;
-}
-.lalign {
-	text-align: left;
-}
-button, .button, input {
-	border: 1px solid #000;
-	font-size: 1em;
-}
-.widebutton{
-	width: 100%;
-}
-input[type=text], input[type=password] {
-	line-height:1.5em;
-	height:1.5em;
-}
-button, .button, input[type=button], input[type=submit] {
-	color: @col-links;
-	text-align: center;
-	background: @col-btn;
-	height: 2em;
-	line-height: 2em;
-	cursor: pointer;
-}
-#recaptcha_widget_div {
-	margin-top: 1em;
-	margin-bottom: 1em;
-}
-.aligned_div p label[for="id_captcha"] {
-	display:none;
-}
-p.addendum, .aligned_div p.addendum{
-	margin-top: 2em;
-	display: block;
-}
-//Firefox ignores max-width in % for display:table children
-//Therefore, rules must be added for all vw margin cases
-#wrapper.sidebar .item_summary *{
-	max-width: calc(~"100vw - 24em");
+#wrapper {
+	display: flex;
+	flex-direction: row;
+	& > * {
+		padding-top: 2.5em;
+		min-height: 100vh;
+		background-color: @col-bg2;
+	}
+	#asidewrapper {
+		width: 20em;
+		display: none;
+	}
+	&.sidebar #asidewrapper{ display: block; }
+	aside{
+		width: 20em;
+		height: 100%;
+		position: fixed;
+		border-right: 1px solid @col-txt;
+		color: @col-txt;
+		background: @col-bg2;
+	}
+	#itemwrapper , #aligned_div{
+		background-color: @col-bg2;
+		color: @col-txt;
+		margin: 0 auto;
+		max-width: @size-item;
+		flex: 1;
+	}
+	#aligned_div {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		form {
+			max-width: 40em;
+			width: 100%;
+			p{
+				display: flex;
+				padding: 0.5em 1em;
+				* {
+					min-width: 10em;
+					line-height: 2em;
+					flex: 1;
+				}
+				input[type=text], input[type=password],
+				input[type=url],  input[type=email]{
+					min-width: 10em;
+					flex: 2;
+				}
+				input[type=submit]{
+					align-self: flex-end;
+					margin-top: 1em;
+					max-width: 15em;
+				}
+			}
+			#recaptcha_area {
+				margin-left: auto;
+				margin-right: 1em;
+			}
+			label[for="id_captcha"] {
+				display:none;
+			}
+			.addendum {
+				margin: 0 auto;
+				padding-top: 3em;
+				max-width: 30em;
+			}
+		}
+	}
+	.centredText {
+		text-align: center;
+	}
 }
 .item{
-	max-width: 100%;
+	width: 100%;
+	&.read .item_header a{
+		color: @col-read;
+	}
+	&.collapsed .item_summary {
+		display: none;
+	}
 	.item_summary {
+		padding: 1em 2em;
 		* {
 			max-width: 100%;
-			//Firefox ignores max-width in % for display:table children
-			max-width: calc(~"100vw - 4em");
 			background: none !important; //override inline styles
-			text-align: justify;
 			color: @col-txt !important; //override inline styles
 			font-size: 1em !important; //override inline styles
 		}
@@ -302,7 +197,7 @@ p.addendum, .aligned_div p.addendum{
 			margin: 0em !important; //override inline styles
 		}
 		img {
-			height: auto;
+			//height: auto;
 		}
 		li {
 			list-style-position: inside;
@@ -317,41 +212,23 @@ p.addendum, .aligned_div p.addendum{
 		//SO MANY websites are using tables for layout in their RSS
 		table, tr, td, tbody {
 			display: block;
-			max-width: 100%;
-			width: 100% !important; //override inline styles
 			word-break: break-all;
 		}
-		padding-top: 1em;
-		padding-bottom: 1em;
-		padding-left: 2em;
-		padding-right: 2em;
-		display: block;
 	}
 	.item_header {
 		border-top: 1px solid @col-txt;
 		border-bottom: 1px solid @col-txt;
-		display: table;
-		width: 100%;
-		max-width: 100%;
-		height: 2em;
+		display: flex;
+		align-items: center;
 		.item_title {
-			max-width: 90%;
-			display: table-cell;
-			padding-left: 1em;
-			padding-right: 1em;
-			vertical-align: middle;
+			padding: 0em 1em;
+			flex: 1;
 		}
 		.item_title h3 {
 			margin: 0;
 		}
 		.item_actions {
-			display: table-cell;
-			vertical-align: middle;
 			padding-right: 1em;
-			margin-left: auto;
-			text-align: right;
-			width: 6em;
-			min-width: 6em;
 			* {
 				display: inline;
 			}
@@ -361,12 +238,26 @@ p.addendum, .aligned_div p.addendum{
 		}
 	}
 }
-.item.read .item_header a{
-	color: @col-read;
+@media screen and (min-width: 30em) {
 }
-.item.collapsed .item_summary {
-	display: none;
+#smallscreen {
+	visibility: hidden;
 }
-.centredText {
-	text-align: center;
+@media screen and (max-width: 40em) {
+	//Easy way to tell JS that viewport < 40em
+	#smallscreen {
+		visibility: visible;
+	}
+	#wrapper.sidebar #itemwrapper {
+		display: none;
+	}
+	#asidewrapper, aside {
+		width: 100% !important;
+	}
+	.item {
+		display: none;
+		&.selected { display: block;}
+		.hider { display: none; }
+		.item_title { word-break: break-all; }
+	}
 }

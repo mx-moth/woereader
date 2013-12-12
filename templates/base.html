@@ -17,47 +17,32 @@
 	<nav>
 		{% block navbar %}
 		<ul class="leftfloat">
-			{% block leftfloat %}
 			<li class="menu">
 				<a class="symbol" href="{% url 'ownreader:index' %}">&#8962;</a>
 			</li>
 			{% if user.is_authenticated %}
-			{% block appmenu %}
-			{% endblock %}
+			    {% block appmenu %}
+			    {% endblock appmenu %}
 			{% endif %}
-			{% endblock %}
 		</ul>
 		<ul class="rightfloat">
-			{% block rightfloat %}
 			<li class="menu"><a class="symbol" href="#">&#9881;</a>
 				<ul>
 					{% if user.is_authenticated %}
 						{% block usermenu %}
 						{% endblock %}
-						<li><a href="{% url 'auth_logout' %}">logout</a></li>
+						<li><a href="{% url 'auth_logout' %}">Log Out</a></li>
 					{% else %}
-						<li><a href="{% url 'auth_login' %}">login</a></li>
+						<li><a href="{% url 'auth_login' %}">Log In</a></li>
 					{% endif %}
 				</ul>
 			</li>
-			{% endblock %}
 		</ul>
 		{% endblock navbar %}
 	</nav>
 	<div id="wrapper"{% block wrapperclasses %}{% endblock %}>
-		<div id="navspacer">&nbsp;</div>
-		{% block sidebar %}
+		{% block content %}
 		{% endblock %}
-		<div id="mainwrapper">
-			<div id="main">
-				<div id="outer_aligner">
-					<div {% block aligner %}id="inner_aligner"{% endblock %}>
-						{% block content %}
-						{% endblock %}
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </body>
 </html>
