@@ -1,9 +1,10 @@
 @col-bg:         #000000;
 @col-bg2:        #222222;
-@col-btn:        #444444;
-@col-btnH:       #555555;
-@col-links:      #ffffff;
-@col-txt:        #ffffff;
+@col-btn:        #333333;
+@col-btnH:       #444444;
+@col-div:        #999999;
+@col-links:      #cccccc;
+@col-txt:        #cccccc;
 @col-read:       #777777;
 @col-item-links: #bbbbff;
 @col-error:      #FF0000;
@@ -53,6 +54,9 @@ button, .button, input[type=button], input[type=submit] {
 	background: @col-btn;
 	cursor: pointer;
 	text-align: center;
+	&:hover{
+		background: @col-btnH;
+	}
 }
 nav {
 	min-width: 10em;
@@ -85,7 +89,7 @@ nav {
 	}
 	.symbol {
 		font-family: 'EntypoRegular';
-		font-size: 2.5em;
+		font-size: 2em;
 		height: 1em;
 		line-height: 1em;
 		background: none;
@@ -107,9 +111,8 @@ nav {
 	display: flex;
 	flex-direction: row;
 	& > * {
-		padding-top: 2.5em;
+		padding-top: 2em;
 		min-height: 100vh;
-		background-color: @col-bg2;
 	}
 	#asidewrapper {
 		width: 20em;
@@ -124,8 +127,7 @@ nav {
 		color: @col-txt;
 		background: @col-bg2;
 	}
-	#itemwrapper , #aligned_div{
-		background-color: @col-bg2;
+	#itemWrapper , #aligned_div{
 		color: @col-txt;
 		margin: 0 auto;
 		max-width: @size-item;
@@ -180,9 +182,7 @@ nav {
 }
 .item{
 	width: 100%;
-	&.read .item_header a{
-		color: @col-read;
-	}
+	background: @col-bg;
 	&.collapsed .item_summary {
 		display: none;
 	}
@@ -215,6 +215,18 @@ nav {
 		table, tr, td, tbody {
 			display: block;
 			word-break: break-all;
+		}
+	}
+	&.read .item_header a{
+		color: @col-read;
+	}
+	&.read.selected .item_header {
+		background: @col-read;
+	}
+	&.selected .item_header {
+		background: @col-txt;
+		a{
+			color: @col-bg;
 		}
 	}
 	.item_header {
@@ -250,7 +262,7 @@ nav {
 	#smallscreen {
 		visibility: visible;
 	}
-	#wrapper.sidebar #itemwrapper {
+	#wrapper.sidebar #itemWrapper {
 		display: none;
 	}
 	#asidewrapper, aside {

@@ -1,26 +1,26 @@
-$(document).ready(setupMenus);
+WOE = window.WOE || {};
 
 //Show menus on demand, hide all others
-function menuShow($this){
+WOE.menuShow = function($this){
 	$this.find('ul').css('display', 'block');
 	menuHide($('.menu').not($this));
-}
+};
 
 //Hide specific menus on demand
-function menuHide($this){
+WOE.menuHide = function($this){
 	$this.find('ul').css('display', 'none');
-}
+};
 
 //Toggle all menus as required
-function menuToggle($this){
+WOE.menuToggle = function($this){
 	if($this.find('ul').css('display')=='none')
-		menuShow($this);
+		WOE.menuShow($this);
 	else
-		menuHide($this);
-}
+		WOE.menuHide($this);
+};
 
 //Enable menu functionality
-function setupMenus() {
+WOE.setupMenus = function() {
 	//Menus should have null locations; don't propagate links otherwise
 	$('a').on('click touchstart', (function(e){
 		if($(this).attr('href')!='#')
@@ -30,18 +30,20 @@ function setupMenus() {
 	$('.menu:has(ul)').on('click touchstart', (function(e){
 		e.stopPropagation(); //stop it from triggering the document event
 		e.preventDefault();  //touchscreen devices do both otherwise
-		menuToggle($(this));
+		WOE.menuToggle($(this));
 	}));
-	$('.menu').on('mouseenter', (function(){ menuShow($(this)) }));
-	$('.menu').on('mouseleave', (function(){ menuHide($(this)) }));
+	$('.menu').on('mouseenter', (function(){ WOE.menuShow($(this)) }));
+	$('.menu').on('mouseleave', (function(){ WOE.menuHide($(this)) }));
 	//Close menus on outside clicks
 	$(document).on('click touchstart', (function (e) {
 		if(e.which != (2 || 3)){
-			menuHide($('.menu'));
+			WOE.menuHide($('.menu'));
 		}
 	}));
 	//Scroll to top on Navbar click
-	$('#navbar').click(function (e) {
+	$('nav').click(function (e) {
 		window.scrollTo(0,0);
 	});
-}
+};
+
+$(document).ready(WOE.setupMenus);

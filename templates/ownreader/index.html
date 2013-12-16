@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block scripts %}
-	<script src="{{ STATIC_URL }}js/jquery.mobile-1.3.2.custom.min.js"></script>
-	<script src="{{ STATIC_URL }}js/jquery.django-ajax.js"></script>
+	<script src="{{ STATIC_URL }}js/jquery.mobile.js"></script>
+	<script src="{{ STATIC_URL }}js/jquery.util-functions.js"></script>
 	<script src="{{ STATIC_URL }}js/jquery.infinite-scroll.js"></script>
 	<script src="{{ STATIC_URL }}js/feed.js"></script>
 {% endblock scripts %}
@@ -15,7 +15,7 @@
 	</li>
 	<li class="menu">
 		<a class="symbol" href="{% url 'ownreader:toggleSidebar' %}"
-		    id="sidebarToggle" onclick="sidebarToggle(); return false;">
+		    id="sidebarToggle" onclick="WOE.sidebarToggle(); return false;">
 		    &#128193;
 		</a>
 	</li>
@@ -24,7 +24,7 @@
 		    id="allItemsForm">
             {% csrf_token %}
 		    {{ formset }}
-		    <button class="symbol" onclick="markAllAsRead(); return false;">
+		    <button class="symbol" onclick="WOE.markAllAsRead(); return false;">
 		        &#59146;
 		    </button>
 		</form>
@@ -53,9 +53,9 @@
 		</p>
 	</aside>
 </div>
-<div id="itemwrapper">
+<div id="itemWrapper">
 {% if items.has_previous %}
-    <form action="/" method="post" id="previous_page" class="non-js">
+    <form action="/" method="post" id="previousPage" class="non-js">
         {% csrf_token %}
         <input name="page" type="hidden"
             value="{{ items.previous_page_number }}" />
@@ -74,7 +74,7 @@
                 </h3>
             </div>
             <div class="item_actions">
-                <button onclick="toggleShow({{ item.pk }})" class="hider">
+                <button onclick="WOE.toggleShow({{ item.pk }})" class="hider">
                     {% if prefs.viewMode == "EX" %}-
                     {% else %}+
                     {% endif %}
@@ -83,7 +83,7 @@
                     {% csrf_token %}
                     <input name="id" type="hidden" value="{{ item.pk }}" />
                     <input type="submit" value="Read"
-                        onclick="toggleRead({{ item.pk }}); return false;">
+                        onclick="WOE.toggleRead({{ item.pk }}); return false;">
                 </form>
             </div>
         </div>
@@ -93,7 +93,7 @@
     </div>
 {% endfor %}
 {% if items.has_next %}
-    <form action="/" method="post" id="next_page" class="non-js">
+    <form action="/" method="post" id="nextPage" class="non-js">
         {% csrf_token %}
         <input name="items" id="itemsPerPage" type="hidden"
             value="{{ prefs.itemsPerPage }}" />
