@@ -5,8 +5,9 @@ WOE.viewMode;
 WOE.itemShown;
 
 WOE.prepare = function() {
-	WOE.addCaptions();
 	WOE.preview = false;
+	$('body').addClass('js');
+	
 	
 	//Setup Expansion
 	WOE.selected = $('.item').first();
@@ -68,10 +69,10 @@ WOE.prepare = function() {
 		WOE.addCaptions();
 		WOE.nullLinks('.item_title');
 	})(jQuery);
-	WOE.infiniteScroll.init(null, context, null, null, null, postClean);
+	WOE.infiniteScroll.init();
+	WOE.infiniteScroll.postClean(postClean);
+	WOE.infiniteScroll.loadMore();
 	$('#itemWrapper').scroll(WOE.infiniteScroll.loadMore);
-	
-	$('body').addClass('js');
 	
 	//Makes small-screened devices ignore starting state of sidebar
 	if($('#smallscreen').css('visibility')=='visible')

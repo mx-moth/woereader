@@ -1,44 +1,20 @@
-window.WOE = WOE || {};
+WOE = window.WOE || {};
 
 WOE.infiniteScroll = (function($){
 	"use strict";
-	var appendID;
-	var context;
-	var itemClass;
-	var loading;
+	var appendID = '#itemWrapper';
+	var context = {};
+	var itemClass = '.item';
+	var loading = false;
 	var newPage;
-	var pageID;
-	var postClean;
-	var preClean;
-	var replaceID;
+	var pageID = '#newPage';
+	var postClean = function(){ $('#previousPage').remove(); };
+	var preClean = function(){ $('#nextPage').remove(); };
+	var replaceID = '#allItemsForm';
 
-	//Initialisation
-	var init = function(newAppendID, newContext, newPageID, newItemClass,
-			newPreClean, newPostClean, newReplaceID){
-		loading = false;
-		appendID = newAppendID || 'itemWrapper';
-		appendID = '#' + appendID;
-		context = newContext || {};
-		pageID = newPageID || 'newPage';
-		pageID = '#' + pageID;
-		newPage = $(pageID).val();
-		itemClass = newItemClass || 'item';
-		itemClass = '.' + itemClass;
-		preClean = newPreClean || oldPreClean;
-		postClean = newPostClean || oldPostClean;
-		replaceID = newReplaceID || 'allItemsForm';
-		replaceID = '#' + replaceID;
+	var init = function() {
 		$(window).on('load resize scroll', loadMore);
-		loadMore();
-	};
-
-	//Default cleaning functions
-	var oldPreClean = function(){
-		$('#nextPage').remove();
-	};
-	var oldPostClean = function(){
-		$('#previousPage').remove();
-	};
+	}
 
 	//Grab the next page's items if 5th-to-last item is in view
 	var loadMore = function(){
@@ -53,6 +29,10 @@ WOE.infiniteScroll = (function($){
 		if(!WOE.isElementVisible(itemToCheck))
 			return;
 		loading = true;
+		//Ensure we know which page to grab
+		var newPage = $(pageID).val();
+		var currContext = context;
+		currContext.page = newPage;
 		//Replaces the formset with the new one, appends the new items
 		var update = function(data, textStatus, xhr){
 			var $response = data;
@@ -65,20 +45,21 @@ WOE.infiniteScroll = (function($){
 			$(appendID).append(newItems);
 			//Remove the previous page loader form
 			postClean();
-			//Get the value of the next page to load
-			newPage = $(pageID).val();
 			//Add captions for any new items retrieved
 			loading = false;
 			//Check that we've fetched enough content
 			loadMore();
 		};
-		var currContext = context;
-		currContext.page = newPage;
 		WOE.djajax("", currContext, update);
+	};
+
+	var setPostClean = function(newCleaner){
+		postClean = newCleaner;
 	};
 
 	return {
 		init: init,
 		loadMore: loadMore,
-	}
+		postClean: setPostClean,
+	};
 })(jQuery);
