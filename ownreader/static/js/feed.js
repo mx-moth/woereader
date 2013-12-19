@@ -64,11 +64,12 @@ WOE.prepare = function() {
 		adding: "True",
 		newest: $('.item').first().attr('id'),
 	};
-	var postClean = (function(){
+	var postClean = function(){
 		$('#previousPage').remove();
 		WOE.addCaptions();
 		WOE.nullLinks('.item_title');
-	})(jQuery);
+	};
+	postClean();
 	WOE.infiniteScroll.init();
 	WOE.infiniteScroll.postClean(postClean);
 	WOE.infiniteScroll.loadMore();
