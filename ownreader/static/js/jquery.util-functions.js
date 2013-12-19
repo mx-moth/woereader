@@ -44,28 +44,11 @@ WOE.djajax = function($url, $data, successFunction){
 
 //Check if an element is in view
 WOE.isElementVisible = function(el){
-	var eap,
-	rect     = el.getBoundingClientRect(),
-	docEl    = document.documentElement,
-	vWidth   = window.innerWidth || docEl.clientWidth,
-	vHeight  = window.innerHeight || docEl.clientHeight,
-	efp      = function (x, y) { return document.elementFromPoint(x, y) },
-	contains = "contains" in el ? "contains" : "compareDocumentPosition",
-	has      = contains == "contains" ? 1 : 0x10;
-
-	// Return false if it's not in the viewport
-	if (rect.right < 0 || rect.bottom < 0
-			|| rect.left > vWidth || rect.top > vHeight)
-		return false;
-
-	// Return true if any of its four corners are visible
-	if ((eap = efp(rect.left,  rect.top)) == el
-			|| el[contains](eap) == has
-		||(eap = efp(rect.right, rect.top)) == el
-			|| el[contains](eap) == has
-		||(eap = efp(rect.right, rect.bottom)) == el
-			|| el[contains](eap) == has
-		||(eap = efp(rect.left,  rect.bottom)) == el
-			|| el[contains](eap) == has)
-		return true;
+	var rect = el.getBoundingClientRect();
+	return (
+		rect.top >= 0 &&
+		rect.left >= 0 &&
+		rect.bottom <= $(window).height() &&
+		rect.right <= $(window).width()
+	);
 };
