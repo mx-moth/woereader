@@ -3,7 +3,7 @@ WOE = window.WOE || {};
 //Show menus on demand, hide all others
 WOE.menuShow = function($this){
 	$this.find('ul').css('display', 'block');
-	menuHide($('.menu').not($this));
+	WOE.menuHide($('.menu').not($this));
 };
 
 //Hide specific menus on demand

@@ -49,11 +49,13 @@ class UserPrefs(models.Model):
     user = models.ForeignKey(User)
     showRead = models.BooleanField(default=False)
     showSidebar = models.BooleanField(default=True)
+    AUTOEXPAND = 'AX'
     COLLAPSED = 'CO'
     EXPANDED = 'EX'
     TALL = 'TA'
     WIDE = 'WI'
-    VIEWMODE_CHOICES = ((COLLAPSED, 'Collapsed'),
+    VIEWMODE_CHOICES = ((AUTOEXPAND, 'Auto-Expand'),
+                        (COLLAPSED, 'Collapsed'),
                         (EXPANDED, 'Expanded'),
                         (TALL, 'Tall'),
                         (WIDE, 'Wide'),)

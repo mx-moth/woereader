@@ -15,7 +15,7 @@
 	</li>
 	<li class="menu">
 		<a class="symbol" href="{% url 'ownreader:toggleSidebar' %}"
-		    id="sidebarToggle" onclick="WOE.sidebarToggle(); return false;">
+		    id="sidebarToggle" onclick="WOE.toggleSidebar(); return false;">
 		    &#128193;
 		</a>
 	</li>
@@ -41,7 +41,12 @@
 {% block wrapperclasses %}
     class="
     {% if prefs.showSidebar %}sidebar{% endif %}
-    {% if prefs.viewMode == "CO" %}collapse{% endif %}
+    {% if prefs.viewMode == "CO" %}collapse
+        {% elif prefs.viewMode == "AX" %}autoexpand
+        {% elif prefs.viewMode == "EX" %}expand
+        {% elif prefs.viewMode == "TA" %}tall
+        {% elif prefs.viewMode == "WI" %}wide
+    {% endif %}
     "
 {% endblock %}
 
@@ -53,57 +58,63 @@
 		</p>
 	</aside>
 </div>
-<div id="itemWrapper">
-{% if items.has_previous %}
-    <form action="/" method="post" id="previousPage" class="non-js">
-        {% csrf_token %}
-        <input name="page" type="hidden"
-            value="{{ items.previous_page_number }}" />
-        <input class="widebutton" type="submit" value="Newer Entries">
-    </form>
-{% endif %}
-{% for item in items %}
-    <div class="item
-        {% if item.read %}read{% endif %}
-        {% if prefs.viewMode != "EX" %}collapsed{% endif %}"
-        id="{{ item.pk }}">
-        <div class="item_header">
-            <div class="item_title">
-                <h3>
-                    <a href="{{ item.item.url }}">{{ item.item.title }}</a>
-                </h3>
+<div id="mainWrapper">
+    <div id="itemWrapper">
+    {% if items.has_previous %}
+        <form action="/" method="post" id="previousPage" class="non-js">
+            {% csrf_token %}
+            <input name="page" type="hidden"
+                value="{{ items.previous_page_number }}" />
+            <input class="widebutton" type="submit" value="Newer Entries">
+        </form>
+    {% endif %}
+    {% for item in items %}
+        <div class="item
+            {% if item.read %}read{% endif %}
+            {% if prefs.viewMode != "EX" %}collapsed{% endif %}"
+            id="{{ item.pk }}">
+            <div class="item_header">
+                <div class="item_title" onclick="WOE.selectItem({{ item.pk }})">
+                    <h3>
+                        <a href="{{ item.item.url }}">{{ item.item.title }}</a>
+                    </h3>
+                </div>
+                <div class="item_actions">
+                    <button onclick="WOE.toggleShow({{ item.pk }})" class="hider">
+                        {% if prefs.viewMode == "EX" %}-
+                        {% else %}+
+                        {% endif %}
+                    </button>
+                    <form action={% url 'ownreader:toggleRead' %} method="post">
+                        {% csrf_token %}
+                        <input name="id" type="hidden" value="{{ item.pk }}" />
+                        <input type="submit" value="Read"
+                            onclick="WOE.toggleRead({{ item.pk }}); return false;">
+                    </form>
+                </div>
             </div>
-            <div class="item_actions">
-                <button onclick="WOE.toggleShow({{ item.pk }})" class="hider">
-                    {% if prefs.viewMode == "EX" %}-
-                    {% else %}+
-                    {% endif %}
-                </button>
-                <form action={% url 'ownreader:toggleRead' %} method="post">
-                    {% csrf_token %}
-                    <input name="id" type="hidden" value="{{ item.pk }}" />
-                    <input type="submit" value="Read"
-                        onclick="WOE.toggleRead({{ item.pk }}); return false;">
-                </form>
+            <div class="item_summary">
+                {{item.item.content|safe}}
             </div>
         </div>
-        <div class="item_summary">
-            {{item.item.content|safe}}
-        </div>
+    {% endfor %}
+    {% if items.has_next %}
+        <form action="/" method="post" id="nextPage" class="non-js">
+            {% csrf_token %}
+            <input name="items" id="itemsPerPage" type="hidden"
+                value="{{ prefs.itemsPerPage }}" />
+            <input name="showRead" id="showRead" type="hidden"
+                value="{{ prefs.showRead }}" />
+            <input name="page" id="newPage" type="hidden"
+                value="{{ items.next_page_number }}" />
+            <input class="widebutton" type="submit" value="Older Entries">
+        </form>
+    {% endif %}
     </div>
-{% endfor %}
-{% if items.has_next %}
-    <form action="/" method="post" id="nextPage" class="non-js">
-        {% csrf_token %}
-        <input name="items" id="itemsPerPage" type="hidden"
-            value="{{ prefs.itemsPerPage }}" />
-        <input name="showRead" id="showRead" type="hidden"
-            value="{{ prefs.showRead }}" />
-        <input name="page" id="newPage" type="hidden"
-            value="{{ items.next_page_number }}" />
-        <input class="widebutton" type="submit" value="Older Entries">
-    </form>
-{% endif %}
+    <div id="previewWrapper">
+        <div id="preview"></div>
+        <div id="preview_actions"><p>actions</p></div>
+    </div>
 </div>
 {% endblock %}
 

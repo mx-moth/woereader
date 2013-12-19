@@ -1,15 +1,34 @@
 //---------------------------------Page Setup----------------------------------
 WOE = window.WOE || {};
 WOE.selected;
+WOE.viewMode;
+WOE.itemShown;
 
 WOE.prepare = function() {
 	WOE.addCaptions();
+	WOE.preview = false;
 	
 	//Setup Expansion
 	WOE.selected = $('.item').first();
 	WOE.selected.addClass('selected');
-	if($('#wrapper').hasClass('collapse'))
-		WOE.showItem($(WOE.selected));
+	var wclasses = document.getElementById('wrapper').className.split(/\s+/);
+	for (var i=0; i<wclasses.length; i++)
+		if(wclasses[i] === 'autoexpand'){
+			WOE.viewMode = "autoexpand";
+			WOE.itemShown = true;
+		}else if(wclasses[i] === 'collapse')
+			WOE.viewMode = "collapse";
+		else if(wclasses[i] === 'expand')
+			WOE.viewMode = "expand";
+		else if(wclasses[i] === 'tall'){
+			WOE.viewMode = "tall";
+			WOE.itemShown = true;
+		}else if(wclasses[i] === 'wide'){
+			WOE.viewMode = "wide";
+			WOE.itemShown = true;
+		}
+	if(WOE.itemShown)
+		WOE.showItem(WOE.selected);
 
 	//Setup Hotkeys
 	$(document).keyup(function(e){
@@ -17,6 +36,9 @@ WOE.prepare = function() {
 		switch(code){
 			case 67: //'c' -> toggle collapsing for item
 				WOE.toggleShow(WOE.selected.attr('ID'));
+				break;
+			case 70: //'f' -> toggle folders sidebar
+				WOE.toggleSidebar();
 				break;
 			case 78: //'n' -> next item
 				WOE.nextItem();
@@ -44,8 +66,10 @@ WOE.prepare = function() {
 	var postClean = (function(){
 		$('#previousPage').remove();
 		WOE.addCaptions();
+		WOE.nullLinks('.item_title');
 	})(jQuery);
 	WOE.infiniteScroll.init(null, context, null, null, null, postClean);
+	$('#itemWrapper').scroll(WOE.infiniteScroll.loadMore);
 	
 	$('body').addClass('js');
 	
@@ -65,7 +89,8 @@ WOE.nextItem = function(){
 		WOE.selected.removeClass('selected');
 		WOE.selected = $(WOE.selected).next('.item');
 		WOE.selected.addClass('selected');
-		WOE.showItem(WOE.selected);
+		if(WOE.itemShown)
+			WOE.showItem(WOE.selected);
 	}
 	WOE.infiniteScroll.loadMore();
 };
@@ -78,11 +103,12 @@ WOE.previousItem = function(){
 		WOE.selected = $(WOE.selected).prev('.item');
 		WOE.selected.addClass('selected');
 	}
-	WOE.showItem(WOE.selected); //If there is only one item, toggles collapsing
+	if(WOE.itemShown)
+		WOE.showItem(WOE.selected);
 };
 
 //Show/hide the sidebar
-WOE.sidebarToggle = function(){
+WOE.toggleSidebar = function(){
 	if($('#wrapper').hasClass('sidebar'))
 		$('#wrapper').removeClass('sidebar');
 	else
@@ -106,8 +132,11 @@ WOE.toggleShow = function(itemId){
 };
 
 WOE.showItem = function(item){
-	$(item).find('.hider').text("-");
-	$(item).removeClass('collapsed');
+	if(WOE.viewMode == 'autoexpand' || WOE.viewMode == 'collapse'){
+		$(item).find('.hider').text("-");
+		$(item).removeClass('collapsed');
+	}else
+		$('#preview').html(WOE.selected.html());
 };
 
 WOE.hideItem = function(item){
@@ -115,6 +144,14 @@ WOE.hideItem = function(item){
 	$(item).addClass('collapsed');
 	WOE.infiniteScroll.loadMore();
 };
+
+WOE.selectItem = function(item){
+	WOE.hideItem(WOE.selected);
+	WOE.selected.removeClass('selected');
+	WOE.selected = $('#'+item);
+	WOE.selected.addClass('selected');
+	WOE.showItem(WOE.selected);
+}
 
 
 //-------------------------Appearance fixer functions--------------------------
@@ -129,6 +166,17 @@ WOE.addCaptions = function(){
 	});
 };
 
+//Change links in headers to display on left and open on middle
+WOE.nullLinks = function(itemClass){
+	var links = $(itemClass).find('a').not('.nullLink');
+	links.click(function(e){
+		if(e.which == 1 ){
+			e.preventDefault();
+			$(this).parent().click();
+		}
+	});
+	links.addClass('nullLink');
+}
 
 //------------------------------AJAX functions---------------------------------
 WOE.toggleRead = function(itemId){

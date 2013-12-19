@@ -140,8 +140,38 @@ nav {
   color: #cccccc;
   background: #222222;
 }
-#wrapper #itemWrapper,
-#wrapper #aligned_div {
+#wrapper #mainWrapper {
+  flex: 1;
+  display: flex;
+}
+#wrapper #mainWrapper #previewWrapper {
+  display: none;
+}
+#wrapper #mainWrapper #itemWrapper,
+#wrapper #mainWrapper #preview {
+  overflow-y: auto;
+}
+#wrapper.tall #mainWrapper {
+  flex-direction: column;
+}
+#wrapper.tall #mainWrapper > * {
+  max-height: 50%;
+}
+#wrapper.wide #mainWrapper {
+  flex-direction: row;
+}
+#wrapper.tall #mainWrapper,
+#wrapper.wide #mainWrapper {
+  max-height: 100vh;
+}
+#wrapper.tall #mainWrapper #previewWrapper,
+#wrapper.wide #mainWrapper #previewWrapper {
+  display: flex;
+  width: 100%;
+}
+#wrapper #mainWrapper #itemWrapper,
+#wrapper #aligned_div,
+#wrapper #mainWrapper #previewWrapper {
   color: #cccccc;
   margin: 0 auto;
   max-width: 55em;
@@ -200,76 +230,123 @@ nav {
 #wrapper .centredText {
   text-align: center;
 }
-.item {
+#previewWrapper {
+  display: flex;
+  flex-direction: column;
+}
+#previewWrapper #preview {
+  flex: 1;
+  height: 100%;
+}
+#previewWrapper #preview_actions {
+  height: 2em;
+  width: 100%;
+  background: #222222;
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+}
+.item,
+#preview {
   width: 100%;
   background: #000000;
 }
-.item.collapsed .item_summary {
+.item.collapsed .item_summary,
+#preview.collapsed .item_summary {
   display: none;
 }
-.item .item_summary {
+.item .item_summary,
+#preview .item_summary {
   padding: 1em 2em;
 }
-.item .item_summary * {
+.item .item_summary *,
+#preview .item_summary * {
   max-width: 100%;
   background: none !important;
   color: #cccccc !important;
   font-size: 1em !important;
 }
-.item .item_summary a {
+.item .item_summary a,
+#preview .item_summary a {
   color: #bbbbff !important;
   margin: 0em !important;
 }
-.item .item_summary li {
+.item .item_summary li,
+#preview .item_summary li {
   list-style-position: inside;
 }
-.item .item_summary blockquote {
+.item .item_summary blockquote,
+#preview .item_summary blockquote {
   padding-left: 1em;
   margin: 0em !important;
 }
-.item .item_summary pre {
+.item .item_summary pre,
+#preview .item_summary pre {
   word-break: break-all;
 }
 .item .item_summary table,
+#preview .item_summary table,
 .item .item_summary tr,
+#preview .item_summary tr,
 .item .item_summary td,
-.item .item_summary tbody {
+#preview .item_summary td,
+.item .item_summary tbody,
+#preview .item_summary tbody {
   display: block;
   word-break: break-all;
 }
-.item.read .item_header a {
+.item.read .item_header a,
+#preview.read .item_header a {
   color: #777777;
 }
-.item.read.selected .item_header {
+.item.read.selected .item_header,
+#preview.read.selected .item_header {
   background: #777777;
 }
-.item.selected .item_header {
+.item.selected .item_header,
+#preview.selected .item_header {
   background: #cccccc;
 }
-.item.selected .item_header a {
+.item.selected .item_header a,
+#preview.selected .item_header a {
   color: #000000;
 }
-.item .item_header {
+.item .item_header,
+#preview .item_header {
   border-top: 1px solid #cccccc;
   border-bottom: 1px solid #cccccc;
   display: flex;
   align-items: center;
 }
-.item .item_header .item_title {
+.item .item_header .item_title,
+#preview .item_header .item_title {
   padding: 0em 1em;
   flex: 1;
+  cursor: pointer;
 }
-.item .item_header .item_title h3 {
+.item .item_header .item_title h3,
+#preview .item_header .item_title h3 {
   margin: 0;
+  line-height: 2em;
 }
-.item .item_header .item_actions {
+.item .item_header .item_actions,
+#preview .item_header .item_actions {
   padding-right: 1em;
 }
-.item .item_header .item_actions * {
+.item .item_header .item_actions *,
+#preview .item_header .item_actions * {
   display: inline;
+  padding: 0 0.1em;
 }
-.item .item_header .item_actions .hider {
+.item .item_header .item_actions .hider,
+#preview .item_header .item_actions .hider {
   width: 2em;
+}
+#wrapper.tall .item .item_header .item_actions,
+#wrapper.tall #preview .item_header .item_actions,
+#wrapper.wide .item .item_header .item_actions,
+#wrapper.wide #preview .item_header .item_actions {
+  display: none;
 }
 #smallscreen {
   visibility: hidden;
