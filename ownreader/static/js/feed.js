@@ -5,11 +5,26 @@ WOE.viewMode;
 WOE.itemShown;
 
 WOE.prepare = function() {
-	WOE.preview = false;
 	$('body').addClass('js');
 	
+	//Setup Infinite Scrolling
+	var context = {
+		showRead: $('#showRead').val(),
+		pageSize: $('#itemsPerPage').val(),
+		adding: "True",
+		newest: $('.item').first().attr('id'),
+	};
+	var postClean = function() {
+		$('#previousPage').remove();
+		WOE.addCaptions();
+		WOE.nullLinks('.item_title');
+	};
+	WOE.infiniteScroll.init(null, context, null, null, null, postClean, null);
+	WOE.infiniteScroll.loadMore();
+	$('#itemWrapper').scroll(WOE.infiniteScroll.loadMore);
 	
 	//Setup Expansion
+	WOE.preview = false;
 	WOE.selected = $('.item').first();
 	WOE.selected.addClass('selected');
 	var wclasses = document.getElementById('wrapper').className.split(/\s+/);
@@ -58,23 +73,6 @@ WOE.prepare = function() {
 	$('.item').on("swipeleft", WOE.nextItem);
 	$('.item').on("swiperight", WOE.previousItem);
 
-	var context = {
-		showRead: $('#showRead').val(),
-		pageSize: $('#itemsPerPage').val(),
-		adding: "True",
-		newest: $('.item').first().attr('id'),
-	};
-	var postClean = function(){
-		$('#previousPage').remove();
-		WOE.addCaptions();
-		WOE.nullLinks('.item_title');
-	};
-	postClean();
-	WOE.infiniteScroll.init();
-	WOE.infiniteScroll.postClean(postClean);
-	WOE.infiniteScroll.loadMore();
-	$('#itemWrapper').scroll(WOE.infiniteScroll.loadMore);
-	
 	//Makes small-screened devices ignore starting state of sidebar
 	if($('#smallscreen').css('visibility')=='visible')
 		$('#wrapper').removeClass('sidebar');

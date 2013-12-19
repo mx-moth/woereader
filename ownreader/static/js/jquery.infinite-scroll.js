@@ -1,23 +1,32 @@
 WOE = window.WOE || {};
 
-WOE.infiniteScroll = (function($){
+WOE.infiniteScroll = ( function($) {
 	"use strict";
-	var appendID = '#itemWrapper';
-	var context = {};
-	var itemClass = '.item';
-	var loading = false;
+	var appendID;
+	var context;
+	var itemClass;
+	var loading;
 	var newPage;
-	var pageID = '#newPage';
-	var postClean = function(){ $('#previousPage').remove(); };
-	var preClean = function(){ $('#nextPage').remove(); };
-	var replaceID = '#allItemsForm';
+	var pageID;
+	var postClean;
+	var preClean;
+	var replaceID;
 
-	var init = function() {
+	var init = function(newAppend, newContext, newItem, newPageID,
+						newPreClean, newPostClean, newReplace) {
+		appendID  = newAppend    || '#itemWrapper';
+		context   = newContext   || {};
+		itemClass = newItem      || '.item';
+		pageID    = newPageID    || '#newPage';
+		postClean = newPostClean || function(){ $('#previousPage').remove(); };
+		preClean  = newPreClean  || function(){ $('#nextPage').remove(); };
+		replaceID = newReplace   || '#allItemsForm';
+		loading   = false;
 		$(window).on('load resize scroll', loadMore);
-	}
+	};
 
 	//Grab the next page's items if 5th-to-last item is in view
-	var loadMore = function(){
+	var loadMore = function() {
 		//Stop the function if we're already loading new items
 		if(loading)
 			return;
@@ -30,11 +39,11 @@ WOE.infiniteScroll = (function($){
 			return;
 		loading = true;
 		//Ensure we know which page to grab
-		var newPage = $(pageID).val();
+		newPage = $(pageID).val();
 		var currContext = context;
 		currContext.page = newPage;
 		//Replaces the formset with the new one, appends the new items
-		var update = function(data, textStatus, xhr){
+		var update = function(data, textStatus, xhr) {
 			var $response = data;
 			var formset = $('<div />').html(data).find(replaceID).html();
 			var newItems = $('<div />').html(data).find(appendID).html();
@@ -53,13 +62,43 @@ WOE.infiniteScroll = (function($){
 		WOE.djajax("", currContext, update);
 	};
 
-	var setPostClean = function(newCleaner){
+	var setAppendID = function(newAppend) {
+		appendID = newAppend;
+	};
+
+	var setContext = function(newContext) {
+		context = newContext;
+	};
+
+	var setItemClass = function(newItem) {
+		itemClass = newItem;
+	};
+
+	var setPageID = function(newPageID) {
+		pageID = newPageID;
+	};
+
+	var setPostClean = function(newCleaner) {
 		postClean = newCleaner;
+	};
+
+	var setPreClean = function(newCleaner) {
+		preClean = newCleaner;
+	};
+
+	var setReplaceID = function(newReplace) {
+		replaceID = newReplace;
 	};
 
 	return {
 		init: init,
 		loadMore: loadMore,
+		appendID: setAppendID,
+		context: setContext,
+		itemClass: setItemClass,
+		pageID: setPageID,
 		postClean: setPostClean,
+		preClean: setPreClean,
+		replaceID: setReplaceID,
 	};
 })(jQuery);
