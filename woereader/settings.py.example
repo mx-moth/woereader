@@ -110,6 +110,7 @@ INSTALLED_APPS = (
     'ownreader',
     'djcelery',
     'kombu.transport.django',
+    'djsupervisor',
 )
 
 # Logs

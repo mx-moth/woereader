@@ -176,6 +176,7 @@ nav {
 #wrapper #mainWrapper #itemWrapper,
 #wrapper #aligned_div,
 #wrapper #mainWrapper #previewWrapper {
+  color: #cccccc;
   margin: 0 auto;
   max-width: 55em;
   flex: 1;
@@ -349,6 +350,9 @@ nav {
 #wrapper.preview .item .item_header .item_actions,
 #wrapper.preview #preview .item_header .item_actions {
   display: none;
+}
+@media screen and (min-width: 30em) {
+  
 }
 #smallscreen,
 .smallscreen {
