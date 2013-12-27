@@ -65,9 +65,8 @@ nav {
 	width: 100%;
 }
 .menu {
-	background-color: @col-btn;
 	float: left;
-	line-height: 2em;
+	line-height: 2.25em;
 	list-style-type: none;
 	width: auto;
 	&, & li {
@@ -89,7 +88,9 @@ nav {
 	}
 	.symbol {
 		font-family: 'EntypoRegular';
-		font-size: 2em;
+		font-size: 2.25em;
+		width: 0.9em;
+		text-align: center;
 		height: 1em;
 		line-height: 1em;
 		background: none;
@@ -111,7 +112,8 @@ nav {
 	display: flex;
 	flex-direction: row;
 	& > * {
-		padding-top: 2em;
+		max-width: 100%;
+		padding-top: 2.25em;
 		min-height: 100vh;
 	}
 	#asidewrapper {
@@ -140,7 +142,7 @@ nav {
 		& > * { max-height: 50%; }
 	}
 	&.wide #mainWrapper { flex-direction: row; }
-	&.tall #mainWrapper, &.wide #mainWrapper {
+	&.tall #mainWrapper, &.wide #mainWrapper, &.preview #mainWrapper {
 		max-height: 100vh;
 		#previewWrapper {
 			display: flex;
@@ -148,7 +150,6 @@ nav {
 		}
 	}
 	#mainWrapper #itemWrapper, #aligned_div, #mainWrapper #previewWrapper {
-		color: @col-txt;
 		margin: 0 auto;
 		max-width: @size-item;
 		flex: 1;
@@ -208,12 +209,9 @@ nav {
 		height: 100%;
 	}
 	#preview_actions {
-		height: 2em;
+		height: 2.25em;
 		width: 100%;
-		background: @col-bg2;
-		display: flex;
-		flex-direction: row;
-		justify-items: center;
+		background: @col-btn;
 	}
 }
 .item, #preview {
@@ -288,7 +286,7 @@ nav {
 			.hider {
 				width: 2em;
 			}
-			#wrapper.tall &, #wrapper.wide & {
+			#wrapper.tall &, #wrapper.wide &, #wrapper.preview &{
 				display: none;
 			}
 		}
@@ -296,24 +294,35 @@ nav {
 }
 @media screen and (min-width: 30em) {
 }
-#smallscreen {
+#smallscreen, .smallscreen {
 	visibility: hidden;
+	display: none;
 }
 @media screen and (max-width: 40em) {
 	//Easy way to tell JS that viewport < 40em
-	#smallscreen {
+	#smallscreen, .smallscreen{
 		visibility: visible;
+		display: block;
 	}
-	#wrapper.sidebar #itemWrapper {
+	#wrapper {
+		#mainWrapper, &.tall #mainWrapper > *{
+			max-height: 100vh;
+		}
+	}
+	#wrapper.sidebar #itemWrapper,
+	#wrapper.preview #itemWrapper,
+	#wrapper.tall #mainWrapper #previewWrapper,
+	#wrapper.wide #mainWrapper #previewWrapper,
+	.item .item_summary, .item .item_actions {
 		display: none;
+	}
+	#wrapper.preview #mainWrapper #previewWrapper {
+		display: flex;
 	}
 	#asidewrapper, aside {
 		width: 100% !important;
 	}
 	.item {
-		display: none;
-		&.selected { display: block;}
-		.hider { display: none; }
 		.item_title { word-break: break-all; }
 	}
 }

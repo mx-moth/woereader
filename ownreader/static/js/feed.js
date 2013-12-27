@@ -6,6 +6,8 @@ WOE.itemShown;
 
 WOE.prepare = function() {
 	$('body').addClass('js');
+	WOE.addCaptions();
+	WOE.nullLinks('.item_title');
 	
 	//Setup Infinite Scrolling
 	var context = {
@@ -43,7 +45,7 @@ WOE.prepare = function() {
 			WOE.viewMode = "wide";
 			WOE.itemShown = true;
 		}
-	if(WOE.itemShown)
+	if(WOE.itemShown && $('#smallscreen').css('visibility')!='visible')
 		WOE.showItem(WOE.selected);
 
 	//Setup Hotkeys
@@ -70,8 +72,8 @@ WOE.prepare = function() {
 				break;
 		}
 	});
-	$('.item').on("swipeleft", WOE.nextItem);
-	$('.item').on("swiperight", WOE.previousItem);
+	$('#preview').on("swipeleft", WOE.nextItem);
+	$('#preview').on("swiperight", WOE.previousItem);
 
 	//Makes small-screened devices ignore starting state of sidebar
 	if($('#smallscreen').css('visibility')=='visible')
@@ -86,25 +88,14 @@ WOE.nextItem = function(){
 	else
 		WOE.hideItem(WOE.selected);
 	if(!($(WOE.selected).is(":last-child"))){
-		WOE.selected.removeClass('selected');
-		WOE.selected = $(WOE.selected).next('.item');
-		WOE.selected.addClass('selected');
-		if(WOE.itemShown)
-			WOE.showItem(WOE.selected);
+		WOE.selectItem($(WOE.selected).next('.item').attr('id'));
 	}
-	WOE.infiniteScroll.loadMore();
 };
 
 //Expand the previous item on the page, hide the current
 WOE.previousItem = function(){
-	if(!($(WOE.selected).is(":first-child"))){
-		WOE.hideItem(WOE.selected);
-		WOE.selected.removeClass('selected');
-		WOE.selected = $(WOE.selected).prev('.item');
-		WOE.selected.addClass('selected');
-	}
-	if(WOE.itemShown)
-		WOE.showItem(WOE.selected);
+	if(!($(WOE.selected).is(":first-child")))
+		WOE.selectItem($(WOE.selected).prev('.item').attr('id'));
 };
 
 //Show/hide the sidebar
@@ -132,11 +123,20 @@ WOE.toggleShow = function(itemId){
 };
 
 WOE.showItem = function(item){
-	if(WOE.viewMode == 'autoexpand' || WOE.viewMode == 'collapse'){
+	if($('#smallscreen').css('visibility')=='visible'
+			|| (WOE.viewMode != 'autoexpand' && WOE.viewMode != 'collapse')){
+		$('#preview').html(WOE.selected.html());
+		$('#wrapper').addClass('preview');
+		if(WOE.selected.hasClass('read'))
+			$('#preview').addClass('read');
+		else
+			$('#preview').removeClass('read');
+		$('#previewMarkRead').attr(
+			'onClick', 'WOE.toggleRead('+item.attr('id')+'); return false;');
+	}else{
 		$(item).find('.hider').text("-");
 		$(item).removeClass('collapsed');
-	}else
-		$('#preview').html(WOE.selected.html());
+	}
 };
 
 WOE.hideItem = function(item){
@@ -151,8 +151,12 @@ WOE.selectItem = function(item){
 	WOE.selected = $('#'+item);
 	WOE.selected.addClass('selected');
 	WOE.showItem(WOE.selected);
+	WOE.infiniteScroll.loadMore(); //Check if collapsing showed 5th-to-last
 }
 
+WOE.hidePreview = function(){
+	$('#wrapper').removeClass('preview');
+}
 
 //-------------------------Appearance fixer functions--------------------------
 //Remove the reqirement for mousing-over to get the mouse-over text from comics
@@ -190,12 +194,14 @@ WOE.toggleRead = function(itemId){
 WOE.markAsRead = function(item){
 	WOE.djajax("toggleRead", { id: $(item).attr('id'), read: "True" });
 	$(item).addClass('read');
+	$('#preview').addClass('read');
 	WOE.hideItem(item);
 };
 
 WOE.markAsUnread = function(item){
 	WOE.djajax("toggleRead", { id: $(item).attr('id'), read: "False" });
 	$(item).removeClass('read');
+	$('#preview').removeClass('read');
 };
 
 WOE.markAllAsRead = function(){

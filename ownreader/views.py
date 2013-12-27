@@ -17,6 +17,7 @@ def index(request):
     newestItem = request.POST.get('newest', None)
     adding = request.POST.get('adding', False)
     page = request.POST.get('page', 1)
+    selected = request.POST.get('selected', None)
 
     if page != 1:
         page = int(page)
@@ -68,6 +69,15 @@ def index(request):
         except:
             pass
 
+    #Chose which item to display in the preview
+    if selected is not None:
+        try:
+            selected = items[int(selected)]
+        except:
+            selected = None
+    if selected is None and len(items) > 0:
+        selected = items[0]
+
 
     #Paginate the items, check if a particular page was requested
     paginator = Paginator(items, pageSize)
@@ -92,7 +102,8 @@ def index(request):
 
     context = {'items': currentItems,
                'formset': allItems,
-               'prefs': prefs}
+               'prefs': prefs,
+               'selected': selected}
     return render(request, 'ownreader/index.html', context)
 
 

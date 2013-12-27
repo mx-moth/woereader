@@ -113,7 +113,38 @@
     </div>
     <div id="previewWrapper">
         <div id="preview"></div>
-        <div id="preview_actions"><p>actions</p></div>
+        <div id="preview_actions">
+            <ul class="leftfloat">
+                <li class="menu smallscreen">
+                    <a class="symbol" href="#"
+                        onclick="WOE.hidePreview(); return false;">&#58541;</a>
+                </li>
+                <li class="menu">
+                    <form action={% url 'ownreader:toggleRead' %} method="post">
+                        {% csrf_token %}
+                        <input name="id" type="hidden" value="" />
+                        <button class="symbol" id="previewMarkRead"
+                            onclick="WOE.toggleRead({{ selected.id }}); return false;">
+                            &#59146;
+                        </button>
+                    </form>
+                </li>
+            </ul>
+            <ul class="rightfloat">
+                <li class="menu">
+                    <a class="symbol" href="#" id="viewPreviousItem"
+                        onclick="WOE.previousItem(); return false;">
+                        &#59233;
+                    </a>
+                </li>
+                <li class="menu">
+                    <a class="symbol" href="#" id="viewNextItem"
+                        onclick="WOE.nextItem(); return false;">
+                        &#59234;
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 {% endblock %}
