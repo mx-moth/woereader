@@ -69,15 +69,6 @@ def index(request):
         except:
             pass
 
-    #Chose which item to display in the preview
-    if selected is not None:
-        try:
-            selected = items[int(selected)]
-        except:
-            selected = None
-    if selected is None and len(items) > 0:
-        selected = items[0]
-
 
     #Paginate the items, check if a particular page was requested
     paginator = Paginator(items, pageSize)
@@ -97,6 +88,15 @@ def index(request):
         allPages = Paginator(items, pageSize*page)
         currItems = allPages.page(1)
         formsetItems = items.filter(id__in=[item.id for item in currItems])
+
+    #Chose which item to display in the preview
+    if selected is not None:
+        try:
+            selected = currentItems[int(selected)]
+        except:
+            selected = None
+    if selected is None and len(currentItems) > 0:
+        selected = currentItems[0]
 
     allItems = MarkAllReadFormSet(queryset=formsetItems)
 
