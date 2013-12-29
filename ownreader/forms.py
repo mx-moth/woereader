@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.formtools.preview import FormPreview
 from django.forms.models import modelformset_factory
 from ownreader.feeds import ParseFeed, AddFeed
-from ownreader.models import UserItem
+from ownreader.models import UserItem, UserPrefs
 from django.shortcuts import redirect
 
 
@@ -36,3 +36,13 @@ MarkAllReadFormSet = modelformset_factory(
                                           fields=('id','read',),
                                           extra=0,
                                           widgets={'read': forms.HiddenInput})
+
+class UserPrefsForm(forms.Form):
+    viewMode = forms.ChoiceField(
+            label="View Mode",
+            choices=UserPrefs.VIEWMODE_CHOICES,
+            initial='ex')
+    itemsPerPage = forms.ChoiceField(
+            label="Items per page",
+            choices=UserPrefs.ITEMNUMBER_CHOICES,
+            initial=25)

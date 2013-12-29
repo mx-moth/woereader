@@ -12,6 +12,10 @@
             {{ form.non_field_errors }}
             {{ form.as_p }}
         {% block formcontent %}
+            <p>
+                <label for="submit"></label>
+                <input type="submit" value="Save">
+            </p>
         {% endblock formcontent%}
     </form>
 {% endblock textcontent %}

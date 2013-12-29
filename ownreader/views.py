@@ -3,7 +3,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponse
 from ownreader.models import UserItem, UserPrefs
 from ownreader.tasks import CeleryUpdater
-from ownreader.forms import MarkAllReadFormSet
+from ownreader.forms import MarkAllReadFormSet, UserPrefsForm
 from django.core.paginator import Paginator, EmptyPage
 
 
@@ -180,3 +180,27 @@ def toggleSidebar(request):
             prefs.save()
     return redirect('/')
 
+
+def settings(request):
+    if request.user.is_authenticated():
+        try:
+            prefs = UserPrefs.objects.get(user=request.user)
+        except:
+            pass
+        if request.method == 'POST':
+            form = UserPrefsForm(request.POST)
+            if form.is_valid():
+                viewMode = form.cleaned_data['viewMode']
+                itemsPerPage = form.cleaned_data['itemsPerPage']
+                prefs.viewMode = viewMode
+                prefs.itemsPerPage = itemsPerPage
+                prefs.save();
+                return redirect('/')
+        else:
+            form = UserPrefsForm( initial={
+                    'viewMode': prefs.viewMode,
+                    'itemsPerPage': prefs.itemsPerPage})
+        return render(request, 'ownreader/forms.html', {
+            'form': form,
+        })
+    return redirect('/')

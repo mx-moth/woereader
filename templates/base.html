@@ -31,6 +31,7 @@
 					{% if user.is_authenticated %}
 						{% block usermenu %}
 						{% endblock %}
+                        <li><a href="{% url 'ownreader:settings' %}">Settings</a></li>
 						<li><a href="{% url 'auth_logout' %}">Log Out</a></li>
 					{% else %}
 						<li><a href="{% url 'auth_login' %}">Log In</a></li>

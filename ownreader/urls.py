@@ -7,6 +7,7 @@ urlpatterns = patterns(
     url(r'^$', 'ownreader.views.index', name='index'),
     url(r'^addfeed/$', login_required(AddFeedFormPreview(AddFeedForm)),
         name='addFeed'),
+	url(r'^settings/$', 'ownreader.views.settings', name='settings'),
     url(r'^update$', 'ownreader.views.update', name='UserUpdate'),
     url(r'^toggleRead$', 'ownreader.views.toggleRead', name="toggleRead"),
     url(r'^toggleShowRead$', 'ownreader.views.toggleShowRead', name="toggleShowRead"),
