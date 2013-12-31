@@ -37,12 +37,6 @@ MarkAllReadFormSet = modelformset_factory(
                                           extra=0,
                                           widgets={'read': forms.HiddenInput})
 
-class UserPrefsForm(forms.Form):
-    viewMode = forms.ChoiceField(
-            label="View Mode",
-            choices=UserPrefs.VIEWMODE_CHOICES,
-            initial='ex')
-    itemsPerPage = forms.ChoiceField(
-            label="Items per page",
-            choices=UserPrefs.ITEMNUMBER_CHOICES,
-            initial=25)
+class UserPrefsForm(forms.ModelForm):
+    class Meta(object):
+        fields = ('viewMode', 'itemsPerPage')
